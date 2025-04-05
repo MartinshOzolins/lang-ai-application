@@ -6,9 +6,9 @@ export default function MainHeader() {
           LangAI{" "}
         </h2>
         <div className="flex text-xs space-x-2 w-full justify-end">
-          <p>Features</p>
-          <p>FAQ</p>
-          <p>Contact</p>
+          <p className="hover:cursor-pointer hover:text-gray-100">Features</p>
+          <p className="hover:cursor-pointer hover:text-gray-100">FAQ</p>
+          <p className="hover:cursor-pointer hover:text-gray-100">Contact</p>
         </div>
       </div>
     </div>
