@@ -3,7 +3,7 @@ import FeaturesBox from "./FeaturesBoxSingleCard";
 
 export default function FeaturesBoxList() {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 text-sm sm:text-xl ">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 text-sm sm:text-xl inter-regular">
       <FeaturesBox
         title={"Custom AI-Generated Tasks"}
         body={
