@@ -4,7 +4,7 @@ import FrequentlyAskedQuestionsSection from "../../components/FAQ/FrequentlyAske
 
 export default function Home() {
   return (
-    <div className="w-full h-full flex flex-col px-3 md:px-25 sm:px-7 pb-20 inter-regular">
+    <div className="w-full  flex flex-col px-3 md:px-25 sm:px-7 pb-20 inter-regular">
       <h1 className="text-center  instrument-serif-regular-italic text-xl sm:text-3xl md:text-4xl">
         Boost Your Language Skills with AI-Powered Tasks
       </h1>
@@ -13,7 +13,7 @@ export default function Home() {
         tasks in seconds. LangAI is your personalized language learning
         companion, designed to help you practice and improve with ease.
       </p>
-      <button className="py-2 bg-slate-900 text-white w-52  rounded-xl mx-auto text-center">
+      <button className="py-2 bg-neutral-900 text-white w-52  rounded-xl mx-auto text-center">
         Generate My First Task
       </button>
       <h2 className="text-center  instrument-serif-regular-italic text-xl sm:text-2xl md:text-3xl pt-20 sm:pt-30 pb-3 sm:pb-5 md:pb-10 text-center">

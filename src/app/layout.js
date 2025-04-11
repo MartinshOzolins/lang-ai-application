@@ -7,6 +7,7 @@ export const metadata = {
 
 //components
 import MainHeader from "../../components/Header";
+import MainFooter from "../../components/MainFooter";
 
 export default function RootLayout({ children }) {
   return (
@@ -14,6 +15,7 @@ export default function RootLayout({ children }) {
       <body className={"w-screen h-screen pt-28 bg-gray-100 "}>
         <MainHeader />
         {children}
+        <MainFooter />
       </body>
     </html>
   );
