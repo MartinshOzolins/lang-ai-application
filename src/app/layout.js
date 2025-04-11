@@ -6,7 +6,7 @@ export const metadata = {
 };
 
 //components
-import MainHeader from "../../components/Header";
+import MainHeader from "../../components/MainHeader";
 import MainFooter from "../../components/MainFooter";
 
 export default function RootLayout({ children }) {

@@ -2,7 +2,7 @@ import FrequentlyAskedQuestionsSingleCard from "./FrequentlyAskedQuestionsSingle
 
 export default function FrequentlyAskedQuestionsSection() {
   return (
-    <div className="flex flex-col pb-10 inter-regular">
+    <div className="flex flex-col pb-10 inter-regular" id="faq">
       <h2 className="text-center  instrument-serif-regular-italic text-xl sm:text-2xl md:text-3xl pt-20 sm:pt-30 pb-3 sm:pb-5 md:pb-10 text-center">
         📌 Frequently Asked Questions (FAQ)
       </h2>
