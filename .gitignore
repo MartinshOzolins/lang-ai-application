@@ -50,5 +50,6 @@ next-env.d.ts
 # Static file generation
 /static/
 
-
-
+# OpenAI config
+/config
+/actions

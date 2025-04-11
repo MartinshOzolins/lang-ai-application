@@ -12,7 +12,7 @@ import MainFooter from "../../components/MainFooter";
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={"w-screen h-screen pt-28 bg-gray-100 "}>
+      <body className={"w-screen h-screen bg-gray-100 "}>
         <MainHeader />
         {children}
         <MainFooter />

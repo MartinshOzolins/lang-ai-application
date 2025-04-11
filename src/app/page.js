@@ -4,7 +4,7 @@ import FrequentlyAskedQuestionsSection from "../../components/FAQ/FrequentlyAske
 
 export default function Home() {
   return (
-    <div className="w-full  flex flex-col px-3 md:px-25 sm:px-7 pb-20 inter-regular">
+    <div className="w-full  flex flex-col px-3 md:px-25 sm:px-7 pb-20 pt-28 inter-regular">
       <h1 className="text-center  instrument-serif-regular-italic text-xl sm:text-3xl md:text-4xl">
         Boost Your Language Skills with AI-Powered Tasks
       </h1>
