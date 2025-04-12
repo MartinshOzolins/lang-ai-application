@@ -22,8 +22,7 @@ export default function TaskGeneratorPage() {
           LangAI
         </h2>
       </div>
-
-      <div className="p-5 rounded-xl shadow-md w-full h-full pt-20 px-2">
+      <div className=" rounded-xl shadow-md w-full pt-10 px-2 pt-8 pb-5 max-w-3xl mx-auto max-h-96 mt-5 overflow-scroll ">
         <form action={formAction} className="space-y-3">
           <div className="flex flex-col w-full items-end mb-4">
             <p className="text-sm font-medium text-gray-700">
