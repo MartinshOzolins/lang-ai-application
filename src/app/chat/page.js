@@ -8,8 +8,8 @@ import { generateTasks } from "../../../actions/actions";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 
-// pdf
-//import { jsPDF } from "jspdf";
+// PDF generator
+import jsPDF from "jspdf";
 
 export default function TaskGeneratorPage() {
   const [level, setLevel] = useState("A1");
@@ -23,6 +23,7 @@ export default function TaskGeneratorPage() {
   const [hasGenerated, setHasGenerated] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const messagesEndRef = useRef(null); // dummy element for scrolling
+
   // splits tasks into separate sentences when generated
   useEffect(() => {
     if (state.response) {
@@ -35,11 +36,10 @@ export default function TaskGeneratorPage() {
     }
   }, [state.response]);
 
+  // scrolls to the bottom when tasks are generated
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-  console.log(tasks);
-  // scrolls to the bottom when tasks are split
   useEffect(() => {
     if (hasGenerated) {
       scrollToBottom();
@@ -59,6 +59,29 @@ export default function TaskGeneratorPage() {
     });
   };
 
+  const handleGeneratePDF = (shouldIncludeAnswers = false) => {
+    const pdf = new jsPDF({ orientation: "p", format: "a4", unit: "mm" });
+
+    // 1st page with sentences
+    let pageOneY = 20;
+    tasks.forEach((task, index) => {
+      pdf.text(`${index + 1}. ${task.sentence}`, 20, pageOneY);
+      pageOneY += 20;
+    });
+
+    if (shouldIncludeAnswers === true) {
+      // 2nd page with answers
+      pdf.addPage({ format: "a4", orientation: "p", unit: "mm" });
+      let pageTwoY = 20;
+      tasks.forEach((task, index) => {
+        pdf.text(`${index + 1}. ${task.answer}`, 20, pageTwoY);
+        pageTwoY += 20;
+      });
+    }
+
+    pdf.save("tasks");
+  };
+
   return (
     <div className="w-full h-full flex flex-col pt-5 relative">
       <div className="border-b border-gray-300">
@@ -66,7 +89,7 @@ export default function TaskGeneratorPage() {
           LangAI
         </h2>
       </div>
-      <div className=" rounded-xl shadow-md w-full h-full px-2 pt-8 pb-20 mx-auto overflow-scroll max-w-4xl">
+      <div className=" rounded-xl shadow-md w-full h-full px-2 pt-8 pb-20 mx-auto overflow-scroll max-w-4xl ">
         {/* Form */}
         <form
           action={formAction}
@@ -85,7 +108,7 @@ export default function TaskGeneratorPage() {
                   className={`px-2 hover:cursor-pointer  ${
                     level === l
                       ? "text-black font-bold underline "
-                      : " text-gray-700 "
+                      : "text-gray-700"
                   }`}
                 >
                   {l}
@@ -108,7 +131,7 @@ export default function TaskGeneratorPage() {
                   className={`px-2 hover:cursor-pointer ${
                     language === lang
                       ? "text-black font-bold underline "
-                      : " text-gray-700 "
+                      : "text-gray-700"
                   }`}
                 >
                   {lang}
@@ -139,7 +162,7 @@ export default function TaskGeneratorPage() {
                   className={`px-2 hover:cursor-pointer ${
                     topic === t
                       ? "text-black font-bold underline "
-                      : " text-gray-700 "
+                      : "text-gray-700"
                   }`}
                 >
                   {t}
@@ -174,7 +197,7 @@ export default function TaskGeneratorPage() {
                   className={`px-2 hover:cursor-pointer ${
                     style === value
                       ? "text-black font-bold underline "
-                      : " text-gray-700 "
+                      : "text-gray-700"
                   }`}
                 >
                   {label}
@@ -259,9 +282,12 @@ export default function TaskGeneratorPage() {
                   />
                 </svg>
               </span>
-              Edit Task
+              {!isEditing ? "Edit Task" : "Save"}
             </button>
-            <button className="flex items-center hover:cursor-pointer">
+            <button
+              className="flex items-center hover:cursor-pointer"
+              onClick={() => handleGeneratePDF(true)}
+            >
               <span className="pr-1">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -278,7 +304,10 @@ export default function TaskGeneratorPage() {
               </span>
               Download with Answers
             </button>
-            <button className="flex items-center hover:cursor-pointer">
+            <button
+              className="flex items-center hover:cursor-pointer"
+              onClick={() => handleGeneratePDF(false)}
+            >
               <span className="pr-1">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -298,24 +327,3 @@ export default function TaskGeneratorPage() {
     </div>
   );
 }
-// if (state.response) {
-//   // Default export is a4 paper, portrait, using millimeters for units
-//   const doc = new jsPDF({
-//     orientation: "p",
-//     unit: "px",
-//     format: "a4",
-//     putOnlyUsedFonts: true,
-//     floatPrecision: 16, // or "smart", default is 16
-//   });
-//   doc.setLineHeightFactor("3");
-//   // doc.setDrawColor("black");
-//   // doc.setLineWidth(1/72);
-
-//   let initial = 10;
-//   state.response.split("-").forEach((sentence, index) => {
-//     doc.text(`${index + 1}.${sentence}`, 10, initial);
-//     initial += 10;
-//   });
-
-//   doc.save("a4.pdf");
-// }
