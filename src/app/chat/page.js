@@ -12,7 +12,7 @@ import StopCircleIcon from "@mui/icons-material/StopCircle";
 //import { jsPDF } from "jspdf";
 
 export default function TaskGeneratorPage() {
-  const [level, setLevel] = useState("a1");
+  const [level, setLevel] = useState("A1");
   const [language, setLanguage] = useState("spanish");
   const [topic, setTopic] = useState("food");
   const [style, setStyle] = useState("fill-in-the-blank");
@@ -23,13 +23,12 @@ export default function TaskGeneratorPage() {
   const [hasGenerated, setHasGenerated] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const messagesEndRef = useRef(null); // dummy element for scrolling
-
   // splits tasks into separate sentences when generated
   useEffect(() => {
     if (state.response) {
       setTasks(() => {
-        return state.response.split("-").map((sentence, index) => {
-          return { [index]: sentence };
+        return state.response.map((task) => {
+          return { ...task };
         });
       });
       setHasGenerated(true);
@@ -39,7 +38,7 @@ export default function TaskGeneratorPage() {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
+  console.log(tasks);
   // scrolls to the bottom when tasks are split
   useEffect(() => {
     if (hasGenerated) {
@@ -53,7 +52,7 @@ export default function TaskGeneratorPage() {
     setTasks((prev) => {
       return prev.map((task, currIndex) => {
         if (currIndex === indexToChange) {
-          return { [indexToChange]: e.target.value };
+          return { ...task, sentence: e.target.value };
         }
         return task;
       });
@@ -190,7 +189,7 @@ export default function TaskGeneratorPage() {
             </div>
           )}
           {tasks.length == 0 ? (
-            <div className="w-full flex justify-end items-center gap-2 absolute bottom-10 right-10">
+            <div className="w-full flex justify-end items-center gap-2 px-2">
               {isPending ? (
                 <>
                   <StopCircleIcon className="text-gray-400 animate-pulse hover:cursor-pointer" />
@@ -215,21 +214,21 @@ export default function TaskGeneratorPage() {
         <div className="w-full mt-4 p-4 bg-gray-100 rounded-md flex flex-col ">
           {tasks.length !== 0 && !isEditing && (
             <div>
-              {tasks.map((sent, index) => (
+              {tasks.map((task, index) => (
                 <p className="w-full py-1" key={index}>
-                  {`${index + 1}. ${sent[index]} `}
+                  {`${index + 1}. ${task.sentence} `}
                 </p>
               ))}
             </div>
           )}
           {tasks.length !== 0 && isEditing && (
             <div>
-              {tasks.map((sent, index) => (
+              {tasks.map((task, index) => (
                 <textarea
                   className="w-full py-1"
                   key={index}
                   onChange={(e) => handleTaskChange(e, index)}
-                  defaultValue={`${index + 1}. ${sent[index]} `}
+                  defaultValue={`${index + 1}. ${task.sentence} `}
                 ></textarea>
               ))}
             </div>
