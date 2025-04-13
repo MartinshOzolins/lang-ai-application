@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useActionState } from "react";
 import { generateTasks } from "../../../actions/actions";
 
@@ -8,22 +8,93 @@ import { generateTasks } from "../../../actions/actions";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 
+// pdf
+//import { jsPDF } from "jspdf";
+
 export default function TaskGeneratorPage() {
+  const [level, setLevel] = useState("a1");
   const [language, setLanguage] = useState("spanish");
   const [topic, setTopic] = useState("food");
   const [style, setStyle] = useState("fill-in-the-blank");
 
-  const [state, formAction, isPending] = useActionState(generateTasks, {});
+  const [state, formAction, isPending] = useActionState(generateTasks, []);
+
+  const [tasks, setTasks] = useState([]);
+  const [hasGenerated, setHasGenerated] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const messagesEndRef = useRef(null); // dummy element for scrolling
+
+  // splits tasks into separate sentences when generated
+  useEffect(() => {
+    if (state.response) {
+      setTasks(() => {
+        return state.response.split("-").map((sentence, index) => {
+          return { [index]: sentence };
+        });
+      });
+      setHasGenerated(true);
+    }
+  }, [state.response]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // scrolls to the bottom when tasks are split
+  useEffect(() => {
+    if (hasGenerated) {
+      scrollToBottom();
+      setHasGenerated(false);
+    }
+  }, [hasGenerated]);
+
+  // handles task changes
+  const handleTaskChange = (e, indexToChange) => {
+    setTasks((prev) => {
+      return prev.map((task, currIndex) => {
+        if (currIndex === indexToChange) {
+          return { [indexToChange]: e.target.value };
+        }
+        return task;
+      });
+    });
+  };
 
   return (
-    <div className="w-full h-full flex flex-col pt-5">
+    <div className="w-full h-full flex flex-col pt-5 relative">
       <div className="border-b border-gray-300">
         <h2 className="text-center instrument-serif-regular-italic text-xl sm:text-2xl md:text-3xl pb-1">
           LangAI
         </h2>
       </div>
-      <div className=" rounded-xl shadow-md w-full pt-10 px-2 pt-8 pb-5 max-w-3xl mx-auto max-h-96 mt-5 overflow-scroll ">
-        <form action={formAction} className="space-y-3">
+      <div className=" rounded-xl shadow-md w-full h-full px-2 pt-8 pb-20 mx-auto overflow-scroll max-w-4xl">
+        {/* Form */}
+        <form
+          action={formAction}
+          className="space-y-3"
+          disabled={tasks.length !== 0}
+        >
+          <div className="flex flex-col w-full items-end mb-4">
+            <p className="text-sm font-medium text-gray-700 ">Choose Level:</p>
+            <div className="flex flex-row">
+              {["A1", "A2", "B1", "B2", "C1", "mixed"].map((l) => (
+                <button
+                  disabled={tasks.length !== 0}
+                  type="button"
+                  key={l}
+                  onClick={() => setLevel(l)}
+                  className={`px-2 hover:cursor-pointer  ${
+                    level === l
+                      ? "text-black font-bold underline "
+                      : " text-gray-700 "
+                  }`}
+                >
+                  {l}
+                </button>
+              ))}
+            </div>
+            <input type="hidden" name="topic" value={topic} />
+          </div>
           <div className="flex flex-col w-full items-end mb-4">
             <p className="text-sm font-medium text-gray-700">
               Choose Language:
@@ -31,12 +102,13 @@ export default function TaskGeneratorPage() {
             <div className="flex flex-row">
               {["english", "spanish", "italian", "german"].map((lang) => (
                 <button
+                  disabled={tasks.length !== 0}
                   type="button"
                   key={lang}
                   onClick={() => setLanguage(lang)}
-                  className={`px-2 underline ${
+                  className={`px-2 hover:cursor-pointer ${
                     language === lang
-                      ? "text-black font-bold "
+                      ? "text-black font-bold underline "
                       : " text-gray-700 "
                   }`}
                 >
@@ -49,13 +121,26 @@ export default function TaskGeneratorPage() {
           <div className="flex flex-col w-full items-end mb-4">
             <p className="text-sm font-medium text-gray-700 ">Choose Topic:</p>
             <div className="flex flex-row">
-              {["food", "travel", "grammar", "verbs"].map((t) => (
+              {[
+                "food",
+                "travel",
+                "weather",
+                "numbers",
+                "dates",
+                "colors",
+                "shapes",
+                "sizes",
+                "mixed",
+              ].map((t) => (
                 <button
+                  disabled={tasks.length !== 0}
                   type="button"
                   key={t}
                   onClick={() => setTopic(t)}
-                  className={`px-2 underline ${
-                    topic === t ? "text-black font-bold " : " text-gray-700 "
+                  className={`px-2 hover:cursor-pointer ${
+                    topic === t
+                      ? "text-black font-bold underline "
+                      : " text-gray-700 "
                   }`}
                 >
                   {t}
@@ -68,19 +153,28 @@ export default function TaskGeneratorPage() {
             <p className="text-sm font-medium text-gray-700">
               Choose Task Style:
             </p>
-            <div className="flex flex-row">
+            <div className="flex flex-col items-end sm:flex-row sm:justify-end ">
               {[
                 { label: "Fill in the blank", value: "fill-in-the-blank" },
                 { label: "Translate", value: "translate" },
-                { label: "Answer questions", value: "answer-questions" },
+                { label: "Word Reordering", value: "word-reordering" },
+                {
+                  label: "Multiple Choice Questions",
+                  value: "multiple-choice-questions",
+                },
+                {
+                  label: "Missing Punctuation",
+                  value: "missing-punctuation",
+                },
               ].map(({ label, value }) => (
                 <button
+                  disabled={tasks.length !== 0}
                   type="button"
                   key={value}
                   onClick={() => setStyle(value)}
-                  className={`px-2 underline ${
+                  className={`px-2 hover:cursor-pointer ${
                     style === value
-                      ? "text-black font-bold "
+                      ? "text-black font-bold underline "
                       : " text-gray-700 "
                   }`}
                 >
@@ -95,35 +189,134 @@ export default function TaskGeneratorPage() {
               <p>{state.error}</p>
             </div>
           )}
-          {state?.response && (
-            <div className="w-full mt-4 p-4 bg-gray-100 rounded-md flex flex-col">
-              {state.response?.split("-").map((sentence, index) => (
-                <p key={index}>
-                  <span className="font-semibold">{index + 1}.</span> {sentence}
+          {tasks.length == 0 ? (
+            <div className="w-full flex justify-end items-center gap-2 absolute bottom-10 right-10">
+              {isPending ? (
+                <>
+                  <StopCircleIcon className="text-gray-400 animate-pulse hover:cursor-pointer" />
+                  <span className="text-sm text-gray-500">Generating...</span>
+                </>
+              ) : (
+                <button
+                  disabled={tasks.length !== 0}
+                  type="submit"
+                  className="flex items-center gap-1 text-black hover:font-bold hover:cursor-pointer"
+                >
+                  <ArrowUpwardIcon />
+                  <span className="text-sm font-medium hover:font-bold">
+                    Generate
+                  </span>
+                </button>
+              )}
+            </div>
+          ) : null}
+        </form>
+        {/* Tasks */}
+        <div className="w-full mt-4 p-4 bg-gray-100 rounded-md flex flex-col ">
+          {tasks.length !== 0 && !isEditing && (
+            <div>
+              {tasks.map((sent, index) => (
+                <p className="w-full py-1" key={index}>
+                  {`${index + 1}. ${sent[index]} `}
                 </p>
               ))}
             </div>
           )}
-          <div className="w-full flex justify-end items-center gap-2">
-            {isPending ? (
-              <>
-                <StopCircleIcon className="text-gray-400 animate-pulse" />
-                <span className="text-sm text-gray-500">Generating...</span>
-              </>
-            ) : (
-              <button
-                type="submit"
-                className="flex items-center gap-1 text-black hover:font-bold"
-              >
-                <ArrowUpwardIcon />
-                <span className="text-sm font-medium hover:font-bold">
-                  Generate
-                </span>
-              </button>
-            )}
-          </div>
-        </form>
+          {tasks.length !== 0 && isEditing && (
+            <div>
+              {tasks.map((sent, index) => (
+                <textarea
+                  className="w-full py-1"
+                  key={index}
+                  onChange={(e) => handleTaskChange(e, index)}
+                  defaultValue={`${index + 1}. ${sent[index]} `}
+                ></textarea>
+              ))}
+            </div>
+          )}
+        </div>
+        {/* Element to scroll to  */}
+        <div ref={messagesEndRef} className="h-1"></div>
       </div>
+      {/* Buttons to display after generating */}
+      {tasks.length !== 0 && (
+        <div className="absolute bottom-5 sm:bottom-10 left-1/2 transform -translate-x-1/2 sm:w-full sm:max-w-2xl">
+          <div className="sm:w-full bg-gray-300 flex flex-col sm:flex-row items-center gap-2 sm:gap-4 justify-between px-5 py-2 sm:py-5  rounded-md">
+            <button
+              className="flex items-center hover:cursor-pointer"
+              onClick={() => setIsEditing(!isEditing)}
+            >
+              <span className="pr-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  className="size-4"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </span>
+              Edit Task
+            </button>
+            <button className="flex items-center hover:cursor-pointer">
+              <span className="pr-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  className="size-4"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M11.914 4.086a2 2 0 0 0-2.828 0l-5 5a2 2 0 1 0 2.828 2.828l.556-.555a.75.75 0 0 1 1.06 1.06l-.555.556a3.5 3.5 0 0 1-4.95-4.95l5-5a3.5 3.5 0 0 1 4.95 4.95l-1.972 1.972a2.125 2.125 0 0 1-3.006-3.005L9.97 4.97a.75.75 0 1 1 1.06 1.06L9.058 8.003a.625.625 0 0 0 .884.883l1.972-1.972a2 2 0 0 0 0-2.828Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </span>
+              Download with Answers
+            </button>
+            <button className="flex items-center hover:cursor-pointer">
+              <span className="pr-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  className="size-4"
+                >
+                  <path d="M7 1a.75.75 0 0 1 .75.75V6h-1.5V1.75A.75.75 0 0 1 7 1ZM6.25 6v2.94L5.03 7.72a.75.75 0 0 0-1.06 1.06l2.5 2.5a.75.75 0 0 0 1.06 0l2.5-2.5a.75.75 0 1 0-1.06-1.06L7.75 8.94V6H10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2.25Z" />
+                  <path d="M4.268 14A2 2 0 0 0 6 15h6a2 2 0 0 0 2-2v-3a2 2 0 0 0-1-1.732V11a3 3 0 0 1-3 3H4.268Z" />
+                </svg>
+              </span>
+              Download without Answers
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+// if (state.response) {
+//   // Default export is a4 paper, portrait, using millimeters for units
+//   const doc = new jsPDF({
+//     orientation: "p",
+//     unit: "px",
+//     format: "a4",
+//     putOnlyUsedFonts: true,
+//     floatPrecision: 16, // or "smart", default is 16
+//   });
+//   doc.setLineHeightFactor("3");
+//   // doc.setDrawColor("black");
+//   // doc.setLineWidth(1/72);
+
+//   let initial = 10;
+//   state.response.split("-").forEach((sentence, index) => {
+//     doc.text(`${index + 1}.${sentence}`, 10, initial);
+//     initial += 10;
+//   });
+
+//   doc.save("a4.pdf");
+// }
