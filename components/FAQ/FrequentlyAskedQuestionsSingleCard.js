@@ -26,10 +26,20 @@ export default function FrequentlyAskedQuestionsSingleCard({
         </div>
 
         {!isAnswerVisible && (
-          <AddIcon onClick={() => setIsAnswerVisible((prev) => !prev)} />
+          <AddIcon
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsAnswerVisible((prev) => !prev);
+            }}
+          />
         )}
         {isAnswerVisible && (
-          <CloseIcon onClick={() => setIsAnswerVisible((prev) => !prev)} />
+          <CloseIcon
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsAnswerVisible((prev) => !prev);
+            }}
+          />
         )}
       </div>
       {isAnswerVisible && <p className="py-2 text-gray-700 ">{answer}</p>}
