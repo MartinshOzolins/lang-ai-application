@@ -93,11 +93,13 @@ export default function Form() {
 
   return (
     <>
-      <div className=" rounded-xl shadow-xl w-full h-full px-2 pt-8 pb-25 mx-auto overflow-scroll max-w-4xl border border-gray-100">
+      <div className=" rounded-xl shadow-xl w-full h-full px-2 pt-8 pb-40  mx-auto overflow-scroll max-w-4xl border border-gray-100">
         {/* Form */}
         <form
           action={formAction}
-          className="space-y-3"
+          className={`space-y-3 ${
+            tasks.length !== 0 ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           disabled={tasks.length !== 0}
         >
           <div className="flex flex-col w-full items-end mb-4">
@@ -109,10 +111,14 @@ export default function Form() {
                   type="button"
                   key={l}
                   onClick={() => setLevel(l)}
-                  className={`px-2 hover:cursor-pointer  ${
+                  className={`px-2  ${
                     level === l
                       ? "text-black font-bold underline "
                       : "text-gray-700"
+                  } ${
+                    tasks.length !== 0
+                      ? " hover:cursor-not-allowed"
+                      : "hover:cursor-pointer"
                   }`}
                 >
                   {l}
@@ -130,10 +136,14 @@ export default function Form() {
                   type="button"
                   key={lang}
                   onClick={() => setLanguage(lang)}
-                  className={`px-2 hover:cursor-pointer ${
+                  className={`px-2 ${
                     language === lang
                       ? "text-black font-bold underline "
                       : "text-gray-700"
+                  } ${
+                    tasks.length !== 0
+                      ? " hover:cursor-not-allowed"
+                      : "hover:cursor-pointer"
                   }`}
                 >
                   {lang}
@@ -161,10 +171,14 @@ export default function Form() {
                   type="button"
                   key={t}
                   onClick={() => setTopic(t)}
-                  className={`px-2 hover:cursor-pointer ${
+                  className={`px-2 ${
                     topic === t
                       ? "text-black font-bold underline "
                       : "text-gray-700"
+                  } ${
+                    tasks.length !== 0
+                      ? " hover:cursor-not-allowed"
+                      : "hover:cursor-pointer"
                   }`}
                 >
                   {t}
@@ -196,10 +210,14 @@ export default function Form() {
                   type="button"
                   key={value}
                   onClick={() => setStyle(value)}
-                  className={`px-2 hover:cursor-pointer ${
+                  className={`px-2 ${
                     style === value
                       ? "text-black font-bold underline "
                       : "text-gray-700"
+                  } ${
+                    tasks.length !== 0
+                      ? " hover:cursor-not-allowed"
+                      : "hover:cursor-pointer"
                   }`}
                 >
                   {label}
@@ -264,13 +282,13 @@ export default function Form() {
       </div>
       {/* Buttons to display after generating */}
       {tasks.length !== 0 && (
-        <div className="absolute bottom-5 sm:bottom-10 left-1/2 transform -translate-x-1/2 w-full sm:max-w-2xl shadow-lg">
-          <div className="sm:w-full bg-gray-300 flex flex-col sm:flex-row items-center gap-2 sm:gap-4 justify-between px-5 py-2 sm:py-5  rounded-md">
+        <div className="absolute bottom-5 sm:bottom-10 left-1/2 transform -translate-x-1/2 w-full sm:max-w-3xl ">
+          <div className="sm:w-full bg-gray-200 flex flex-col sm:flex-row items-center gap-4 sm:gap-3 justify-between px-5 py-3 sm:py-5 rounded-md">
             <button
-              className="flex items-center hover:cursor-pointer"
+              className="flex items-center justify-center sm:w-auto w-full py-2 sm:py-3 px-4 sm:px-6 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md shadow-sm transition-all duration-200 hover:cursor-pointer"
               onClick={() => setIsEditing(!isEditing)}
             >
-              <span className="pr-1">
+              <span className="pr-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 16 16"
@@ -286,11 +304,17 @@ export default function Form() {
               </span>
               {!isEditing ? "Edit Task" : "Save"}
             </button>
+
             <button
-              className="flex items-center hover:cursor-pointer"
+              className={`flex items-center justify-center sm:w-auto w-full py-2 sm:py-3 px-4 sm:px-6 bg-gray-300 text-gray-800 rounded-md shadow-sm transition-all duration-200 ${
+                isEditing
+                  ? "hover:cursor-not-allowed"
+                  : "hover:cursor-pointer hover:bg-gray-400"
+              }`}
               onClick={() => handleGeneratePDF(true)}
+              disabled={isEditing}
             >
-              <span className="pr-1">
+              <span className="pr-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 16 16"
@@ -306,11 +330,16 @@ export default function Form() {
               </span>
               Download with Answers
             </button>
+
             <button
-              className="flex items-center hover:cursor-pointer"
+              className={`flex items-center justify-center sm:w-auto w-full py-2 sm:py-3 px-4 sm:px-6 bg-gray-300 text-gray-800 rounded-md shadow-sm transition-all duration-200 ${
+                isEditing
+                  ? "hover:cursor-not-allowed"
+                  : "hover:cursor-pointer hover:bg-gray-400"
+              }`}
               onClick={() => handleGeneratePDF(false)}
             >
-              <span className="pr-1">
+              <span className="pr-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 16 16"
