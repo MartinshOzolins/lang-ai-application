@@ -10,7 +10,7 @@ export default function FeaturesBoxList() {
       >
         🛠️ Features
       </h2>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 text-sm sm:text-xl inter-regular max-w-xl sm:max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3  sm:text-xl inter-regular sm:max-w-4xl mx-auto">
         <FeaturesBox
           title={"Custom AI-Generated Tasks"}
           body={

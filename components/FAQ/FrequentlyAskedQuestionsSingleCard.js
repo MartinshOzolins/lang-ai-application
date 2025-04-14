@@ -16,7 +16,7 @@ export default function FrequentlyAskedQuestionsSingleCard({
 
   return (
     <div
-      className="w-full max-w-3xl bg-stone-200 rounded-xl px-2 py-6 flex flex-col text-sm sm:text-base inter-regular hover:cursor-pointer"
+      className="w-full max-w-3xl bg-stone-200 rounded-xl px-2 py-6 flex flex-col text-sm sm:text-base inter-regular"
       onClick={() => setIsAnswerVisible((prev) => !prev)}
     >
       <div className="w-full flex justify-between">
@@ -42,7 +42,13 @@ export default function FrequentlyAskedQuestionsSingleCard({
           />
         )}
       </div>
-      {isAnswerVisible && <p className="py-2 text-gray-700 ">{answer}</p>}
+      <div
+        className={`transition-all duration-200 ease-in ${
+          isAnswerVisible ? "max-h-40 opacity-100 mt-2" : "max-h-0 opacity-0"
+        }`}
+      >
+        <p className="text-gray-700">{answer}</p>
+      </div>
     </div>
   );
 }
