@@ -48,13 +48,17 @@ export default function MainHeader() {
               </p>
               <div className="border-l-1 h-1/2 ">
                 <SignedOut>
-                  <SignUpButton>
-                    <button className="pl-1 ">Sign Up</button>
+                  <SignUpButton mode="modal">
+                    <button className="pl-1 hover:cursor-pointer">
+                      Sign Up
+                    </button>
                   </SignUpButton>
                 </SignedOut>
                 <SignedIn>
                   <SignOutButton>
-                    <button className="pl-1 ">Sign Out</button>
+                    <button className="pl-1 hover:cursor-pointer">
+                      Sign Out
+                    </button>
                   </SignOutButton>
                 </SignedIn>
               </div>
@@ -67,7 +71,7 @@ export default function MainHeader() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="size-6"
+                  className="size-6 hover:cursor-pointer"
                   onClick={() => setIsSectionVisible((prev) => !prev)}
                 >
                   <path
@@ -83,7 +87,7 @@ export default function MainHeader() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="size-6"
+                  className="size-6 hover:cursor-pointer"
                   onClick={() => setIsSectionVisible((prev) => !prev)}
                 >
                   <path
@@ -118,7 +122,7 @@ export default function MainHeader() {
               <div className="h-1/3">
                 <SignedOut>
                   <SignUpButton>
-                    <button className="text-sm w-full bg-gray-100 rounded-md text-black py-1 flex justify-center items-center">
+                    <button className="text-sm w-full bg-gray-100 rounded-md text-black py-1 flex justify-center items-center hover:cursor-pointer">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

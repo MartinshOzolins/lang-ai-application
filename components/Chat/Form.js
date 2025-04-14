@@ -11,6 +11,7 @@ import StopCircleIcon from "@mui/icons-material/StopCircle";
 
 // PDF generator
 import jsPDF from "jspdf";
+import { useUser } from "@clerk/nextjs";
 
 export default function Form() {
   const [level, setLevel] = useState("A1");
@@ -25,7 +26,7 @@ export default function Form() {
   const [isEditing, setIsEditing] = useState(false);
   const messagesEndRef = useRef(null); // dummy element for scrolling down
 
-  const router = useRouter();
+  const { user } = useUser();
   // splits tasks into separate sentences when generated
   useEffect(() => {
     if (state.response) {
@@ -42,10 +43,16 @@ export default function Form() {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
   useEffect(() => {
+    const reloadUserData = async () => {
+      await user.reload(); // refresh user info to display renewed metadata
+    };
+
     if (hasGenerated) {
       scrollToBottom();
       setHasGenerated(false);
+      reloadUserData();
     }
   }, [hasGenerated]);
 
@@ -81,7 +88,6 @@ export default function Form() {
       });
     }
     pdf.save("tasks");
-    router.refresh(); // refresh page once pdf downloaded
     setLevel("A1");
     setLanguage("spanish");
     setTopic("food");
