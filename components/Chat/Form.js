@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useActionState } from "react";
 import { generateTasks } from "../../actions/actions";
+import { useRouter } from "next/navigation";
 
 // MUI components
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
@@ -22,8 +23,9 @@ export default function Form() {
   const [tasks, setTasks] = useState([]);
   const [hasGenerated, setHasGenerated] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const messagesEndRef = useRef(null); // dummy element for scrolling
+  const messagesEndRef = useRef(null); // dummy element for scrolling down
 
+  const router = useRouter();
   // splits tasks into separate sentences when generated
   useEffect(() => {
     if (state.response) {
@@ -78,9 +80,17 @@ export default function Form() {
         pageTwoY += 20;
       });
     }
-
     pdf.save("tasks");
+    router.refresh(); // refresh page once pdf downloaded
+    setLevel("A1");
+    setLanguage("spanish");
+    setTopic("food");
+    setStyle("fill-in-the-blank");
+    setTasks([]);
+    setHasGenerated(false);
+    setIsEditing(false);
   };
+
   return (
     <>
       <div className=" rounded-xl shadow-xl w-full h-full px-2 pt-8 pb-25 mx-auto overflow-scroll max-w-4xl border border-gray-100">

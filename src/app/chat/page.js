@@ -17,7 +17,6 @@ export default async function TaskGeneratorPage() {
         </h2>
         <div className="w-[100px]" />
       </div>
-
       <Form />
     </div>
   );
