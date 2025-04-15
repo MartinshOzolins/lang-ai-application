@@ -99,7 +99,7 @@ export default function Form() {
 
   return (
     <>
-      <div className=" rounded-xl shadow-xl w-full h-full px-2 pt-8 pb-40  mx-auto overflow-scroll max-w-4xl border border-gray-100">
+      <div className=" rounded-xl shadow-xl w-full h-full px-2 pt-8 mt-5 pb-40  mx-auto overflow-scroll max-w-4xl border border-gray-100 bg-gray-100">
         {/* Form */}
         <form
           action={formAction}
