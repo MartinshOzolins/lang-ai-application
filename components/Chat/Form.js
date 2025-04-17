@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useActionState } from "react";
 import { generateTasks } from "../../actions/actions";
-import { useRouter } from "next/navigation";
 
 // MUI components
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
@@ -12,6 +11,7 @@ import StopCircleIcon from "@mui/icons-material/StopCircle";
 // PDF generator
 import jsPDF from "jspdf";
 import { useUser } from "@clerk/nextjs";
+import { useAvailableRequestsContext } from "../../contexts/AvailableRequestsContext";
 
 export default function Form() {
   const [level, setLevel] = useState("A1");
@@ -26,7 +26,23 @@ export default function Form() {
   const [isEditing, setIsEditing] = useState(false);
   const messagesEndRef = useRef(null); // dummy element for scrolling down
 
+  // context to update available requests
+  const { setAvailableRequests } = useAvailableRequestsContext();
+  // current user instance to retrieve latest availableReuqests
   const { user } = useUser();
+
+  // handles task option changes
+  const handleTaskChange = (e, indexToChange) => {
+    setTasks((prev) => {
+      return prev.map((task, currIndex) => {
+        if (currIndex === indexToChange) {
+          return { ...task, sentence: e.target.value };
+        }
+        return task;
+      });
+    });
+  };
+
   // splits tasks into separate sentences when generated
   useEffect(() => {
     if (state.response) {
@@ -44,30 +60,21 @@ export default function Form() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // updates availableRequests and calls "scrollToBottom" to scroll to the bottom when tasks are generated
   useEffect(() => {
     const reloadUserData = async () => {
       await user.reload(); // refresh user info to display renewed metadata
+      setAvailableRequests(user.publicMetadata.availableRequests || 0); // update availableRequests context
     };
 
     if (hasGenerated) {
-      scrollToBottom();
-      setHasGenerated(false);
       reloadUserData();
+      scrollToBottom();
+      setHasGenerated(false); // resets hasGenerated after the reload
     }
   }, [hasGenerated]);
 
-  // handles task changes
-  const handleTaskChange = (e, indexToChange) => {
-    setTasks((prev) => {
-      return prev.map((task, currIndex) => {
-        if (currIndex === indexToChange) {
-          return { ...task, sentence: e.target.value };
-        }
-        return task;
-      });
-    });
-  };
-
+  // generates PDF and clears inputs
   const handleGeneratePDF = (shouldIncludeAnswers = false) => {
     const pdf = new jsPDF({ orientation: "p", format: "a4", unit: "mm" });
 

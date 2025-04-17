@@ -1,14 +1,9 @@
 export default function FeaturesBox({ title, body, emoji }) {
   return (
-    <div className="w-full h-46 sm:h-64 bg-white shadow-lg rounded-md flex flex-col rounded-xl text-sm sm:text-base xl:text-base">
-      <div className="h-1/2 bg-linear-to-t from-white-500 to-gray-300 rounded-xl"></div>
-      <div className="h-1/2 px-2 flex flex-col justify-start">
-        <h2 className="font-semibold pl-1 text-lg">{title}</h2>
-        <p className="text-gray-800 ">
-          <span className="lg:pr-1">{emoji} </span>
-          {body}
-        </p>
-      </div>
+    <div className="w-full bg-white shadow-md rounded-xl p-4 flex flex-col gap-2 text-sm sm:text-base xl:text-base">
+      <span className="text-2xl">{emoji}</span>
+      <h2 className="font-semibold text-lg">{title}</h2>
+      <p className="text-gray-800">{body}</p>
     </div>
   );
 }

@@ -22,7 +22,6 @@ export async function checkAvailableRequests() {
 
     // resets counter if it's a different day than today
     if (lastReset !== today) {
-      console.log("updating");
       await Clerk.users.updateUser(user.id, {
         publicMetadata: {
           // resets availableRequests
@@ -30,13 +29,17 @@ export async function checkAvailableRequests() {
           lastReset: today,
         },
       });
+      return { status: "success", availableRequests: 10 };
     }
 
     if (publicMetadata.availableRequests <= 0) {
       return { status: "fail" };
     }
 
-    return { status: "success" };
+    return {
+      status: "success",
+      availableRequests: publicMetadata.availableRequests || 0,
+    };
   } catch (err) {
     if (process.env.NODE_ENV === "development") {
       console.error(err);
