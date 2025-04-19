@@ -12,14 +12,14 @@ export default function MainFooter() {
     <>
       {pathname === "/" && (
         <div className="w-full px-0">
-          <footer className="w-full h-72 sm:h-54 bg-neutral-900 text-neutral-400 inter-regular rounded-t-xl px-6 pb-5 sm:pb-15 pt-10 flex flex-col sm:flex-row sm:justify-between sm:items-start gap-6">
+          <footer className="w-full h-72 sm:h-54 bg-neutral-900 text-neutral-400 inter-regular rounded-t-xl px-5 sm:px-10 pb-5 sm:pb-15 pt-10 flex flex-col sm:flex-row sm:justify-between sm:items-start gap-6">
             <div className="flex flex-col gap-2">
               <h2 className="pb-2 text-lg">
-                🧠 Built by language learners, for language learners.
+                🧠 Built by language learners, for language learners
               </h2>
               <Link
                 href="/refund-policy"
-                className="hover:text-white transition"
+                className="hover:text-white transition "
               >
                 Refund Policy
               </Link>
