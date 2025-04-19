@@ -20,6 +20,14 @@
   font-weight: 300;
   font-style: normal;
 }
+
+.inter-semibold {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
 .dotted {
   --dot-bg: white;
   --dot-color: black;

@@ -16,7 +16,7 @@ export default function FrequentlyAskedQuestionsSingleCard({
 
   return (
     <div
-      className="w-full max-w-3xl bg-stone-200 rounded-xl px-2 py-6 flex flex-col text-sm sm:text-base inter-regular"
+      className="w-full max-w-3xl bg-stone-200 rounded-xl px-2 py-6 flex flex-col text-sm sm:text-lg lg:text-xl inter-regular"
       onClick={() => setIsAnswerVisible((prev) => !prev)}
     >
       <div className="w-full flex justify-between">

@@ -5,12 +5,12 @@ export default function FeaturesBoxList() {
   return (
     <>
       <h2
-        className="text-center  instrument-serif-regular-italic text-xl sm:text-3xl md:text-4xl pt-20 sm:pt-30 pb-3 sm:pb-5 text-center"
+        className="text-center  instrument-serif-regular-italic text-2xl md:text-4xl pt-20 sm:pt-30 pb-3 sm:pb-10 text-center"
         id="features"
       >
-        🛠️ Features
+        Features
       </h2>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3  sm:text-xl inter-regular sm:max-w-4xl mx-auto ">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:text-xl inter-regular sm:max-w-4xl mx-auto ">
         <FeaturesBox
           title={"Custom AI-Generated Tasks"}
           body={
