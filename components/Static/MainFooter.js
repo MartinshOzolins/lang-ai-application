@@ -17,12 +17,12 @@ export default function MainFooter() {
               <h2 className="pb-2 text-lg">
                 🧠 Built by language learners, for language learners
               </h2>
-              <Link
+              {/* <Link
                 href="/refund-policy"
                 className="hover:text-white transition "
               >
                 Refund Policy
-              </Link>
+              </Link> */}
               <Link
                 href="/privacy-policy"
                 className="hover:text-white transition"
