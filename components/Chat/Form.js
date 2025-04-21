@@ -12,6 +12,7 @@ import StopCircleIcon from "@mui/icons-material/StopCircle";
 import jsPDF from "jspdf";
 import { useUser } from "@clerk/nextjs";
 import { useAvailableRequestsContext } from "../../contexts/AvailableRequestsContext";
+import ChangeStyleButton from "./ChangeStyleButton";
 
 export default function Form() {
   const [level, setLevel] = useState("A1");
@@ -118,24 +119,22 @@ export default function Form() {
           <div className="flex flex-col w-full items-end mb-4">
             <p className="text-sm font-semibold text-black ">Choose Level:</p>
             <div className="flex flex-row">
-              {["A1", "A2", "B1", "B2", "C1", "mixed"].map((l) => (
-                <button
-                  disabled={tasks.length !== 0}
-                  type="button"
-                  key={l}
-                  onClick={() => setLevel(l)}
-                  className={`px-2  ${
-                    level === l
-                      ? "text-black font-bold underline "
-                      : "text-gray-700"
-                  } ${
-                    tasks.length !== 0
-                      ? " hover:cursor-not-allowed"
-                      : "hover:cursor-pointer"
-                  }`}
-                >
-                  {l}
-                </button>
+              {[
+                { label: "A1", value: "A1" },
+                { label: "A2", value: "A2" },
+                { label: "B1", value: "B1" },
+                { label: "B2", value: "B2" },
+                { label: "C1", value: "C1" },
+                { label: "mixed", value: "mixed" },
+              ].map(({ label, value }) => (
+                <ChangeStyleButton
+                  key={value}
+                  availableValue={value}
+                  valueLabel={label}
+                  tasksArray={tasks}
+                  state={level}
+                  setStateFunction={setLevel}
+                />
               ))}
             </div>
             <input type="hidden" name="level" value={level} />
@@ -143,24 +142,19 @@ export default function Form() {
           <div className="flex flex-col w-full items-end mb-4">
             <p className="text-sm font-semibold text-black">Choose Language:</p>
             <div className="flex flex-row">
-              {["spanish", "italian", "german"].map((lang) => (
-                <button
-                  disabled={tasks.length !== 0}
-                  type="button"
-                  key={lang}
-                  onClick={() => setLanguage(lang)}
-                  className={`px-2 ${
-                    language === lang
-                      ? "text-black font-bold underline "
-                      : "text-gray-700"
-                  } ${
-                    tasks.length !== 0
-                      ? " hover:cursor-not-allowed"
-                      : "hover:cursor-pointer"
-                  }`}
-                >
-                  {lang}
-                </button>
+              {[
+                { label: "spanish", value: "spanish" },
+                { label: "italian", value: "italian" },
+                { label: "german", value: "german" },
+              ].map(({ label, value }) => (
+                <ChangeStyleButton
+                  key={value}
+                  availableValue={value}
+                  valueLabel={label}
+                  tasksArray={tasks}
+                  state={language}
+                  setStateFunction={setLanguage}
+                />
               ))}
             </div>
             <input type="hidden" name="language" value={language} />
@@ -169,33 +163,24 @@ export default function Form() {
             <p className="text-sm font-semibold text-black ">Choose Topic:</p>
             <div className="flex flex-col sm:flex-row">
               {[
-                "food",
-                "travel",
-                "weather",
-                "numbers",
-                "dates",
-                "colors",
-                "shapes",
-                "sizes",
-                "mixed",
-              ].map((t) => (
-                <button
-                  disabled={tasks.length !== 0}
-                  type="button"
-                  key={t}
-                  onClick={() => setTopic(t)}
-                  className={`px-2 ${
-                    topic === t
-                      ? "text-black font-bold underline "
-                      : "text-gray-700"
-                  } ${
-                    tasks.length !== 0
-                      ? " hover:cursor-not-allowed"
-                      : "hover:cursor-pointer"
-                  }`}
-                >
-                  {t}
-                </button>
+                { label: "food", value: "food" },
+                { label: "travel", value: "travel" },
+                { label: "weather", value: "weather" },
+                { label: "numbers", value: "numbers" },
+                { label: "dates", value: "dates" },
+                { label: "colors", value: "colors" },
+                { label: "shapes", value: "shapes" },
+                { label: "sizes", value: "sizes" },
+                { label: "mixed", value: "mixed" },
+              ].map(({ label, value }) => (
+                <ChangeStyleButton
+                  key={value}
+                  availableValue={value}
+                  valueLabel={label}
+                  tasksArray={tasks}
+                  state={topic}
+                  setStateFunction={setTopic}
+                />
               ))}
             </div>
             <input type="hidden" name="topic" value={topic} />
@@ -218,23 +203,14 @@ export default function Form() {
                   value: "missing-punctuation",
                 },
               ].map(({ label, value }) => (
-                <button
-                  disabled={tasks.length !== 0}
-                  type="button"
+                <ChangeStyleButton
                   key={value}
-                  onClick={() => setStyle(value)}
-                  className={`px-2 ${
-                    style === value
-                      ? "text-black font-bold underline "
-                      : "text-gray-700"
-                  } ${
-                    tasks.length !== 0
-                      ? " hover:cursor-not-allowed"
-                      : "hover:cursor-pointer"
-                  }`}
-                >
-                  {label}
-                </button>
+                  availableValue={value}
+                  valueLabel={label}
+                  tasksArray={tasks}
+                  state={style}
+                  setStateFunction={setStyle}
+                />
               ))}
             </div>
             <input type="hidden" name="style" value={style} />
