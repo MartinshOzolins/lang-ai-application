@@ -7,7 +7,7 @@ import { generateTasks } from "../../actions/actions";
 // MUI components
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
-
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 // PDF generator
 import jsPDF from "jspdf";
 import { useUser } from "@clerk/nextjs";
@@ -31,6 +31,9 @@ export default function Form() {
   const { setAvailableRequests } = useAvailableRequestsContext();
   // current user instance to retrieve latest availableReuqests
   const { user } = useUser();
+
+  // ui state
+  const [isTopicChoiceOpen, setIsTopicChoiceOpen] = useState(false);
 
   // handles task option changes
   const handleTaskChange = (e, indexToChange) => {
@@ -86,6 +89,7 @@ export default function Form() {
       pageOneY += 20;
     });
 
+    // if clicked "download with answers" includes second page as well
     if (shouldIncludeAnswers === true) {
       // 2nd page with answers
       pdf.addPage({ format: "a4", orientation: "p", unit: "mm" });
@@ -160,8 +164,14 @@ export default function Form() {
             <input type="hidden" name="language" value={language} />
           </div>
           <div className="flex flex-col w-full items-end mb-4">
-            <p className="text-sm font-semibold text-black ">Choose Topic:</p>
-            <div className="flex flex-col sm:flex-row">
+            <button
+              className="text-sm font-semibold text-black "
+              type="button"
+              onClick={() => setIsTopicChoiceOpen((prev) => !prev)}
+            >
+              Choose Topic: <ArrowDropDownIcon />
+            </button>
+            {/* <div className="flex flex-col sm:flex-row">
               {[
                 { label: "food", value: "food" },
                 { label: "travel", value: "travel" },
@@ -182,7 +192,39 @@ export default function Form() {
                   setStateFunction={setTopic}
                 />
               ))}
-            </div>
+            </div> */}
+            {isTopicChoiceOpen && (
+              <div className="flex flex-col sm:flex-row">
+                {[
+                  { label: "food", value: "food" },
+                  { label: "travel", value: "travel" },
+                  { label: "weather", value: "weather" },
+                  { label: "numbers", value: "numbers" },
+                  { label: "dates", value: "dates" },
+                  { label: "colors", value: "colors" },
+                  { label: "shapes", value: "shapes" },
+                  { label: "sizes", value: "sizes" },
+                  { label: "mixed", value: "mixed" },
+                ].map(({ label, value }) => (
+                  <button
+                    type="button"
+                    key={label}
+                    onClick={() => setTopic(value)}
+                    className={`px-2 ${
+                      topic === value
+                        ? "text-black font-bold underline "
+                        : "text-gray-700"
+                    } ${
+                      tasks.length !== 0
+                        ? " hover:cursor-not-allowed"
+                        : "hover:cursor-pointer"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
             <input type="hidden" name="topic" value={topic} />
           </div>
           <div className="flex flex-col w-full items-end mb-4">
@@ -215,6 +257,7 @@ export default function Form() {
             </div>
             <input type="hidden" name="style" value={style} />
           </div>
+          {/* Error state */}
           {state?.error && (
             <div className="w-full mt-4 p-4 bg-gray-100 rounded-md text-red-600 font-semibold">
               <p>{state.error}</p>
