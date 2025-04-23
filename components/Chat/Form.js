@@ -8,6 +8,8 @@ import { generateTasks } from "../../actions/actions";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+
 // PDF generator
 import jsPDF from "jspdf";
 import { useUser } from "@clerk/nextjs";
@@ -165,13 +167,12 @@ export default function Form() {
           </div>
           <div className="flex flex-col w-full items-end mb-4">
             <button
-              className="text-sm font-semibold text-black "
+              className="hidden sm:inline text-sm font-semibold text-black "
               type="button"
-              onClick={() => setIsTopicChoiceOpen((prev) => !prev)}
             >
-              Choose Topic: <ArrowDropDownIcon />
+              Choose Topic:
             </button>
-            {/* <div className="flex flex-col sm:flex-row">
+            <div className="hidden sm:flex flex-col sm:flex-row ">
               {[
                 { label: "food", value: "food" },
                 { label: "travel", value: "travel" },
@@ -192,9 +193,16 @@ export default function Form() {
                   setStateFunction={setTopic}
                 />
               ))}
-            </div> */}
+            </div>
+            <button
+              className="inline sm:hidden text-sm font-semibold text-black "
+              type="button"
+              onClick={() => setIsTopicChoiceOpen((prev) => !prev)}
+            >
+              Choose Topic: <ArrowDropDownIcon />
+            </button>
             {isTopicChoiceOpen && (
-              <div className="flex flex-col sm:flex-row">
+              <div className="flex sm:hidden flex-col sm:flex-row">
                 {[
                   { label: "food", value: "food" },
                   { label: "travel", value: "travel" },
