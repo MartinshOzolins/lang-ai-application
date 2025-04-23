@@ -195,11 +195,12 @@ export default function Form() {
               ))}
             </div>
             <button
-              className="inline sm:hidden text-sm font-semibold text-black "
+              className="inline sm:hidden text-sm font-semibold text-black hover:cursor-pointer"
               type="button"
               onClick={() => setIsTopicChoiceOpen((prev) => !prev)}
             >
-              Choose Topic: <ArrowDropDownIcon />
+              Choose Topic:{" "}
+              {!isTopicChoiceOpen ? <ArrowDropDownIcon /> : <ArrowDropUpIcon />}
             </button>
             {isTopicChoiceOpen && (
               <div className="flex sm:hidden flex-col sm:flex-row">
