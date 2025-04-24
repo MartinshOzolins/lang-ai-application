@@ -91,11 +91,12 @@ export default function Form() {
   // generates PDF and clears inputs
   const handleGeneratePDF = (shouldIncludeAnswers = false) => {
     const pdf = new jsPDF({ orientation: "p", format: "a4", unit: "mm" });
+    pdf.setFontSize(11);
 
     // 1st page with sentences
     let pageOneY = 20;
     tasks.forEach((task, index) => {
-      pdf.text(`${index + 1}. ${task.sentence}`, 20, pageOneY);
+      pdf.text(`${index + 1}. ${task.sentence}`, 5, pageOneY);
       pageOneY += 20;
     });
 
@@ -105,7 +106,7 @@ export default function Form() {
       pdf.addPage({ format: "a4", orientation: "p", unit: "mm" });
       let pageTwoY = 20;
       tasks.forEach((task, index) => {
-        pdf.text(`${index + 1}. ${task.answer}`, 20, pageTwoY);
+        pdf.text(`${index + 1}. ${task.answer}`, 5, pageTwoY);
         pageTwoY += 20;
       });
     }
