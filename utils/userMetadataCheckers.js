@@ -33,7 +33,7 @@ export async function checkAvailableRequests() {
     }
 
     if (publicMetadata.availableRequests <= 0) {
-      return { status: "fail" };
+      return { status: "fail", availableRequests: 0 };
     }
 
     return {
