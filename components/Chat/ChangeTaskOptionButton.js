@@ -1,4 +1,4 @@
-export default function ChangeStyleButton({
+export default function ChangeTaskOptionButton({
   tasksArray,
   availableValue,
   valueLabel,

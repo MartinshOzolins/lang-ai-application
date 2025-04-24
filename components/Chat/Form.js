@@ -7,14 +7,13 @@ import { generateTasks } from "../../actions/actions";
 // MUI components
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 // PDF generator
 import jsPDF from "jspdf";
 import { useUser } from "@clerk/nextjs";
 import { useAvailableRequestsContext } from "../../contexts/AvailableRequestsContext";
-import ChangeStyleButton from "./ChangeStyleButton";
+import ChangeTaskOptionButton from "./ChangeTaskOptionButton";
+import SmallChangeTaskOptionButton from "./SmallChangeTaskOptionButton";
 
 export default function Form() {
   const [level, setLevel] = useState("A1");
@@ -34,8 +33,9 @@ export default function Form() {
   // current user instance to retrieve latest availableReuqests
   const { user } = useUser();
 
-  // ui state
+  // UI state for smaller screen
   const [isTopicChoiceOpen, setIsTopicChoiceOpen] = useState(false);
+  const [isTaskStyleChoiceOpen, setIsTaskStyleChoiceOpen] = useState(false);
 
   // handles task option changes
   const handleTaskChange = (e, indexToChange) => {
@@ -133,7 +133,7 @@ export default function Form() {
                 { label: "C1", value: "C1" },
                 { label: "mixed", value: "mixed" },
               ].map(({ label, value }) => (
-                <ChangeStyleButton
+                <ChangeTaskOptionButton
                   key={value}
                   availableValue={value}
                   valueLabel={label}
@@ -153,7 +153,7 @@ export default function Form() {
                 { label: "italian", value: "italian" },
                 { label: "german", value: "german" },
               ].map(({ label, value }) => (
-                <ChangeStyleButton
+                <ChangeTaskOptionButton
                   key={value}
                   availableValue={value}
                   valueLabel={label}
@@ -166,12 +166,12 @@ export default function Form() {
             <input type="hidden" name="language" value={language} />
           </div>
           <div className="flex flex-col w-full items-end mb-4">
-            <button
+            <p
               className="hidden sm:inline text-sm font-semibold text-black "
               type="button"
             >
               Choose Topic:
-            </button>
+            </p>
             <div className="hidden sm:flex flex-col sm:flex-row ">
               {[
                 { label: "food", value: "food" },
@@ -184,7 +184,7 @@ export default function Form() {
                 { label: "sizes", value: "sizes" },
                 { label: "mixed", value: "mixed" },
               ].map(({ label, value }) => (
-                <ChangeStyleButton
+                <ChangeTaskOptionButton
                   key={value}
                   availableValue={value}
                   valueLabel={label}
@@ -194,53 +194,33 @@ export default function Form() {
                 />
               ))}
             </div>
-            <button
-              className="inline sm:hidden text-sm font-semibold text-black hover:cursor-pointer"
-              type="button"
-              onClick={() => setIsTopicChoiceOpen((prev) => !prev)}
-            >
-              Choose Topic:{" "}
-              {!isTopicChoiceOpen ? <ArrowDropDownIcon /> : <ArrowDropUpIcon />}
-            </button>
-            {isTopicChoiceOpen && (
-              <div className="flex sm:hidden flex-col sm:flex-row">
-                {[
-                  { label: "food", value: "food" },
-                  { label: "travel", value: "travel" },
-                  { label: "weather", value: "weather" },
-                  { label: "numbers", value: "numbers" },
-                  { label: "dates", value: "dates" },
-                  { label: "colors", value: "colors" },
-                  { label: "shapes", value: "shapes" },
-                  { label: "sizes", value: "sizes" },
-                  { label: "mixed", value: "mixed" },
-                ].map(({ label, value }) => (
-                  <button
-                    type="button"
-                    key={label}
-                    onClick={() => setTopic(value)}
-                    className={`px-2 ${
-                      topic === value
-                        ? "text-black font-bold underline "
-                        : "text-gray-700"
-                    } ${
-                      tasks.length !== 0
-                        ? " hover:cursor-not-allowed"
-                        : "hover:cursor-pointer"
-                    }`}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            )}
+            {/* Small screen button */}
+            <SmallChangeTaskOptionButton
+              setIsStateChoiceOpen={setIsTopicChoiceOpen}
+              isStateChoiceOpen={isTopicChoiceOpen}
+              state={topic}
+              setState={setTopic}
+              tasks={tasks}
+              textToDisplay={"Choose Topic:"}
+              availableValues={[
+                { label: "food", value: "food" },
+                { label: "travel", value: "travel" },
+                { label: "weather", value: "weather" },
+                { label: "numbers", value: "numbers" },
+                { label: "dates", value: "dates" },
+                { label: "colors", value: "colors" },
+                { label: "shapes", value: "shapes" },
+                { label: "sizes", value: "sizes" },
+                { label: "mixed", value: "mixed" },
+              ]}
+            />
             <input type="hidden" name="topic" value={topic} />
           </div>
           <div className="flex flex-col w-full items-end mb-4">
-            <p className="text-sm font-semibold text-black">
+            <p className="hidden sm:inline text-sm font-semibold text-black">
               Choose Task Style:
             </p>
-            <div className="flex flex-col items-end sm:flex-row sm:justify-end ">
+            <div className="hidden sm:flex flex-col items-end sm:flex-row sm:justify-end ">
               {[
                 { label: "Fill in the blank", value: "fill-in-the-blank" },
                 { label: "Translate", value: "translate" },
@@ -254,7 +234,7 @@ export default function Form() {
                   value: "missing-punctuation",
                 },
               ].map(({ label, value }) => (
-                <ChangeStyleButton
+                <ChangeTaskOptionButton
                   key={value}
                   availableValue={value}
                   valueLabel={label}
@@ -264,6 +244,28 @@ export default function Form() {
                 />
               ))}
             </div>
+            {/* Small screen button */}
+            <SmallChangeTaskOptionButton
+              setIsStateChoiceOpen={setIsTaskStyleChoiceOpen}
+              isStateChoiceOpen={isTaskStyleChoiceOpen}
+              state={style}
+              setState={setStyle}
+              tasks={tasks}
+              textToDisplay={"Choose Task Style:"}
+              availableValues={[
+                { label: "Fill in the blank", value: "fill-in-the-blank" },
+                { label: "Translate", value: "translate" },
+                { label: "Word Reordering", value: "word-reordering" },
+                {
+                  label: "Multiple Choice Questions",
+                  value: "multiple-choice-questions",
+                },
+                {
+                  label: "Missing Punctuation",
+                  value: "missing-punctuation",
+                },
+              ]}
+            />
             <input type="hidden" name="style" value={style} />
           </div>
           {/* Error state */}
@@ -272,6 +274,7 @@ export default function Form() {
               <p>{state.error}</p>
             </div>
           )}
+          {/* Generate button and loading state  */}
           {tasks.length == 0 ? (
             <div className="w-full flex justify-end items-center gap-2 px-2">
               {isPending ? (
@@ -294,7 +297,7 @@ export default function Form() {
             </div>
           ) : null}
         </form>
-        {/* Tasks */}
+        {/* Generated Tasks */}
         <div className="w-full mt-4 p-4 bg-gray-100 rounded-md flex flex-col ">
           {tasks.length !== 0 && !isEditing && (
             <div>
@@ -318,7 +321,7 @@ export default function Form() {
             </div>
           )}
         </div>
-        {/* Element to scroll to  */}
+        {/* Element to scroll to when tasks are generated (for smaller screens) */}
         <div ref={messagesEndRef} className="h-1"></div>
       </div>
       {/* Buttons to display after generating */}
