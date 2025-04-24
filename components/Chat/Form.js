@@ -15,6 +15,14 @@ import { useAvailableRequestsContext } from "../../contexts/AvailableRequestsCon
 import ChangeTaskOptionButton from "./ChangeTaskOptionButton";
 import SmallChangeTaskOptionButton from "./SmallChangeTaskOptionButton";
 
+// Constant values
+import {
+  TASK_LANGUAGE_OPTIONS,
+  TASK_LEVEL_OPTIONS,
+  TASK_TOPIC_OPTIONS,
+  TASK_STYLE_OPTIONS,
+} from "../../constants/options";
+
 export default function Form() {
   const [level, setLevel] = useState("A1");
   const [language, setLanguage] = useState("spanish");
@@ -125,14 +133,7 @@ export default function Form() {
           <div className="flex flex-col w-full items-end mb-4">
             <p className="text-sm font-semibold text-black ">Choose Level:</p>
             <div className="flex flex-row">
-              {[
-                { label: "A1", value: "A1" },
-                { label: "A2", value: "A2" },
-                { label: "B1", value: "B1" },
-                { label: "B2", value: "B2" },
-                { label: "C1", value: "C1" },
-                { label: "mixed", value: "mixed" },
-              ].map(({ label, value }) => (
+              {TASK_LEVEL_OPTIONS.map(({ label, value }) => (
                 <ChangeTaskOptionButton
                   key={value}
                   availableValue={value}
@@ -148,11 +149,7 @@ export default function Form() {
           <div className="flex flex-col w-full items-end mb-4">
             <p className="text-sm font-semibold text-black">Choose Language:</p>
             <div className="flex flex-row">
-              {[
-                { label: "spanish", value: "spanish" },
-                { label: "italian", value: "italian" },
-                { label: "german", value: "german" },
-              ].map(({ label, value }) => (
+              {TASK_LANGUAGE_OPTIONS.map(({ label, value }) => (
                 <ChangeTaskOptionButton
                   key={value}
                   availableValue={value}
@@ -173,17 +170,7 @@ export default function Form() {
               Choose Topic:
             </p>
             <div className="hidden sm:flex flex-col sm:flex-row ">
-              {[
-                { label: "food", value: "food" },
-                { label: "travel", value: "travel" },
-                { label: "weather", value: "weather" },
-                { label: "numbers", value: "numbers" },
-                { label: "dates", value: "dates" },
-                { label: "colors", value: "colors" },
-                { label: "shapes", value: "shapes" },
-                { label: "sizes", value: "sizes" },
-                { label: "mixed", value: "mixed" },
-              ].map(({ label, value }) => (
+              {TASK_TOPIC_OPTIONS.map(({ label, value }) => (
                 <ChangeTaskOptionButton
                   key={value}
                   availableValue={value}
@@ -202,17 +189,7 @@ export default function Form() {
               setState={setTopic}
               tasks={tasks}
               textToDisplay={"Choose Topic:"}
-              availableValues={[
-                { label: "food", value: "food" },
-                { label: "travel", value: "travel" },
-                { label: "weather", value: "weather" },
-                { label: "numbers", value: "numbers" },
-                { label: "dates", value: "dates" },
-                { label: "colors", value: "colors" },
-                { label: "shapes", value: "shapes" },
-                { label: "sizes", value: "sizes" },
-                { label: "mixed", value: "mixed" },
-              ]}
+              availableValues={TASK_TOPIC_OPTIONS}
             />
             <input type="hidden" name="topic" value={topic} />
           </div>
@@ -221,19 +198,7 @@ export default function Form() {
               Choose Task Style:
             </p>
             <div className="hidden sm:flex flex-col items-end sm:flex-row sm:justify-end ">
-              {[
-                { label: "Fill in the blank", value: "fill-in-the-blank" },
-                { label: "Translate", value: "translate" },
-                { label: "Word Reordering", value: "word-reordering" },
-                {
-                  label: "Multiple Choice Questions",
-                  value: "multiple-choice-questions",
-                },
-                {
-                  label: "Missing Punctuation",
-                  value: "missing-punctuation",
-                },
-              ].map(({ label, value }) => (
+              {TASK_STYLE_OPTIONS.map(({ label, value }) => (
                 <ChangeTaskOptionButton
                   key={value}
                   availableValue={value}
@@ -252,19 +217,7 @@ export default function Form() {
               setState={setStyle}
               tasks={tasks}
               textToDisplay={"Choose Task Style:"}
-              availableValues={[
-                { label: "Fill in the blank", value: "fill-in-the-blank" },
-                { label: "Translate", value: "translate" },
-                { label: "Word Reordering", value: "word-reordering" },
-                {
-                  label: "Multiple Choice Questions",
-                  value: "multiple-choice-questions",
-                },
-                {
-                  label: "Missing Punctuation",
-                  value: "missing-punctuation",
-                },
-              ]}
+              availableValues={TASK_STYLE_OPTIONS}
             />
             <input type="hidden" name="style" value={style} />
           </div>
