@@ -33,7 +33,7 @@ export default function UserIcon() {
       )}
       <p className="text-sm text-gray-600 hidden sm:block">
         Today&apos;s Limit:{" "}
-        {availableRequests == null ? null : `${availableRequests} / 10 `}
+        {availableRequests === null ? null : `${availableRequests} / 10 `}
       </p>
     </div>
   );

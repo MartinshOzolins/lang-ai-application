@@ -17,7 +17,7 @@ export default function ChangeTaskOptionButton({
           : "text-gray-700"
       } ${
         tasksArray.length !== 0
-          ? " hover:cursor-not-allowed"
+          ? "hover:cursor-not-allowed"
           : "hover:cursor-pointer"
       }`}
     >

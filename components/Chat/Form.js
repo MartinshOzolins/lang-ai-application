@@ -24,11 +24,13 @@ import {
 } from "../../constants/options";
 
 export default function Form() {
+  // task state values
   const [level, setLevel] = useState("A1");
   const [language, setLanguage] = useState("spanish");
   const [topic, setTopic] = useState("food");
   const [style, setStyle] = useState("fill-in-the-blank");
 
+  // form state
   const [state, formAction, isPending] = useActionState(generateTasks, []);
 
   const [tasks, setTasks] = useState([]);
