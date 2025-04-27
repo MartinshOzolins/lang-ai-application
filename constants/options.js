@@ -8,9 +8,11 @@ export const TASK_LEVEL_OPTIONS = [
 ];
 
 export const TASK_LANGUAGE_OPTIONS = [
-  { label: "spanish", value: "spanish" },
-  { label: "italian", value: "italian" },
-  { label: "german", value: "german" },
+  { label: "Spanish", value: "spanish" },
+  { label: "Italian", value: "italian" },
+  { label: "German", value: "german" },
+  { label: "French", value: "french" },
+  { label: "Swedish", value: "swedish" },
 ];
 
 export const TASK_TOPIC_OPTIONS = [

@@ -25,14 +25,14 @@ export default function UserIcon() {
   }, [updatedAvailableRequests]);
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-4">
       {!isLoaded ? (
         <div className="w-9 h-9 rounded-full bg-gray-300 animate-pulse"></div>
       ) : (
         user && <UserButton />
       )}
-      <p className="text-sm text-gray-600 hidden sm:block">
-        Today&apos;s Limit:{" "}
+      <p className="text-sm text-gray-600 block">
+        <span className="hidden sm:block">Today&apos;s Limit: </span>
         {availableRequests === null ? null : `${availableRequests} / 10 `}
       </p>
     </div>
