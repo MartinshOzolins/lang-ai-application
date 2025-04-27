@@ -25,14 +25,29 @@ export default function UserIcon() {
   }, [updatedAvailableRequests]);
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center">
       {!isLoaded ? (
         <div className="w-9 h-9 rounded-full bg-gray-300 animate-pulse"></div>
       ) : (
-        user && <UserButton />
+        user && (
+          <div className="flex flex-col items-start">
+            <UserButton
+              appearance={{
+                elements: {
+                  avatarBox: "w-12 h-12 sm:h-29 sm:w-29",
+                },
+              }}
+            />
+            <p className="sm:hidden text-xs text-gray-600 ">
+              Limit:{" "}
+              {availableRequests === null ? null : `${availableRequests} / 10 `}
+            </p>
+          </div>
+        )
       )}
-      <p className="text-sm text-gray-600 block">
-        <span className="hidden sm:block">Today&apos;s Limit: </span>
+
+      <p className="text-sm md:text-base text-gray-600 hidden sm:block pl-2">
+        Today&apos;s Limit:{" "}
         {availableRequests === null ? null : `${availableRequests} / 10 `}
       </p>
     </div>

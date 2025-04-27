@@ -124,7 +124,7 @@ export default function Form() {
 
   return (
     <>
-      <div className=" rounded-xl shadow-xl w-full h-full px-2 pt-8 mt-5 pb-40  mx-auto overflow-scroll max-w-4xl border border-gray-100 bg-gray-100">
+      <div className=" rounded-xl shadow-xl w-full h-full px-2 pt-8 mt-5 pb-40  mx-auto overflow-scroll xl:max-w-4xl border border-gray-100 bg-gray-100 relative">
         {/* Form */}
         <form
           action={formAction}
@@ -134,8 +134,10 @@ export default function Form() {
           disabled={tasks.length !== 0}
         >
           <div className="flex flex-col w-full items-end mb-4">
-            <p className="text-sm font-semibold text-black ">Choose Level:</p>
-            <div className="flex flex-row">
+            <p className="text-sm sm:text-base xl:text-lg font-semibold text-black ">
+              Choose Level:
+            </p>
+            <div className="flex flex-row text-base sm:text-lg xl:text-xl">
               {TASK_LEVEL_OPTIONS.map(({ label, value }) => (
                 <ChangeTaskOptionButton
                   key={value}
@@ -150,8 +152,10 @@ export default function Form() {
             <input type="hidden" name="level" value={level} />
           </div>
           <div className="flex flex-col w-full items-end mb-4">
-            <p className="text-sm font-semibold text-black">Choose Language:</p>
-            <div className="flex flex-row">
+            <p className="text-sm sm:text-base xl:text-lg  font-semibold text-black">
+              Choose Language:
+            </p>
+            <div className="flex flex-row text-base sm:text-lg xl:text-xl">
               {TASK_LANGUAGE_OPTIONS.map(({ label, value }) => (
                 <ChangeTaskOptionButton
                   key={value}
@@ -167,12 +171,12 @@ export default function Form() {
           </div>
           <div className="flex flex-col w-full items-end mb-4">
             <p
-              className="hidden sm:inline text-sm font-semibold text-black "
+              className="hidden sm:inline text-sm sm:text-base xl:text-lg font-semibold text-black "
               type="button"
             >
               Choose Topic:
             </p>
-            <div className="hidden sm:flex flex-col sm:flex-row ">
+            <div className="hidden sm:flex flex-col sm:flex-row text-base sm:text-lg xl:text-xl">
               {TASK_TOPIC_OPTIONS.map(({ label, value }) => (
                 <ChangeTaskOptionButton
                   key={value}
@@ -197,10 +201,10 @@ export default function Form() {
             <input type="hidden" name="topic" value={topic} />
           </div>
           <div className="flex flex-col w-full items-end mb-4">
-            <p className="hidden sm:inline text-sm font-semibold text-black">
+            <p className="hidden sm:inline text-sm sm:text-base xl:text-lg font-semibold text-black">
               Choose Task Style:
             </p>
-            <div className="hidden sm:flex flex-col items-end sm:flex-row sm:justify-end ">
+            <div className="hidden sm:flex flex-col items-end sm:flex-row sm:justify-end text-base sm:text-lg xl:text-xl">
               {TASK_STYLE_OPTIONS.map(({ label, value }) => (
                 <ChangeTaskOptionButton
                   key={value}
@@ -236,7 +240,9 @@ export default function Form() {
               {isPending ? (
                 <>
                   <StopCircleIcon className="text-gray-400 animate-pulse hover:cursor-pointer" />
-                  <span className="text-sm text-gray-500">Generating...</span>
+                  <span className="text-sm sm:text-base xl:text-lg  text-gray-500">
+                    Generating...
+                  </span>
                 </>
               ) : (
                 <button
@@ -245,7 +251,7 @@ export default function Form() {
                   className="flex items-center gap-1 text-black hover:font-bold hover:cursor-pointer"
                 >
                   <ArrowUpwardIcon />
-                  <span className="text-sm font-medium hover:font-bold">
+                  <span className="text-sm sm:text-base xl:text-lg font-medium hover:font-bold">
                     Generate
                   </span>
                 </button>
@@ -285,7 +291,7 @@ export default function Form() {
         <div className="absolute bottom-5 sm:bottom-10 left-1/2 transform -translate-x-1/2 w-full sm:max-w-3xl ">
           <div className="sm:w-full bg-gray-200 flex flex-col sm:flex-row items-center gap-4 sm:gap-3 justify-between px-5 py-3 sm:py-5 rounded-md">
             <button
-              className="flex items-center justify-center sm:w-auto w-full py-2 sm:py-3 px-4 sm:px-6 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md shadow-sm transition-all duration-200 hover:cursor-pointer"
+              className="flex items-center justify-center sm:w-auto w-full py-2 sm:py-3 px-4 sm:px-6 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md shadow-sm transition-all duration-200 hover:cursor-pointer lg:text-lg"
               onClick={() => setIsEditing(!isEditing)}
             >
               <span className="pr-2">
@@ -306,7 +312,7 @@ export default function Form() {
             </button>
 
             <button
-              className={`flex items-center justify-center sm:w-auto w-full py-2 sm:py-3 px-4 sm:px-6 bg-gray-300 text-gray-800 rounded-md shadow-sm transition-all duration-200 ${
+              className={`flex items-center justify-center sm:w-auto w-full py-2 sm:py-3 px-4 sm:px-6 bg-gray-300 text-gray-800 rounded-md shadow-sm transition-all duration-200 lg:text-lg ${
                 isEditing
                   ? "hover:cursor-not-allowed"
                   : "hover:cursor-pointer hover:bg-gray-400"
@@ -332,7 +338,7 @@ export default function Form() {
             </button>
 
             <button
-              className={`flex items-center justify-center sm:w-auto w-full py-2 sm:py-3 px-4 sm:px-6 bg-gray-300 text-gray-800 rounded-md shadow-sm transition-all duration-200 ${
+              className={`flex items-center justify-center sm:w-auto w-full py-2 sm:py-3 px-4 sm:px-6 bg-gray-300 text-gray-800 rounded-md shadow-sm transition-all duration-200 lg:text-lg ${
                 isEditing
                   ? "hover:cursor-not-allowed"
                   : "hover:cursor-pointer hover:bg-gray-400"
