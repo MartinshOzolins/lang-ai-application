@@ -240,7 +240,7 @@ export default function Form() {
               {isPending ? (
                 <>
                   <StopCircleIcon className="text-gray-400 animate-pulse hover:cursor-pointer" />
-                  <span className="text-sm sm:text-base xl:text-lg  text-gray-500">
+                  <span className="text-sm sm:text-base xl:text-lg text-gray-500">
                     Generating...
                   </span>
                 </>
@@ -262,7 +262,7 @@ export default function Form() {
         {/* Generated Tasks */}
         <div className="w-full mt-4 p-4 bg-gray-100 rounded-md flex flex-col ">
           {tasks.length !== 0 && !isEditing && (
-            <div>
+            <div className="flex flex-col text-start text-base sm:text-lg xl:text-xl">
               {tasks.map((task, index) => (
                 <p className="w-full py-1" key={index}>
                   {`${index + 1}. ${task.sentence} `}
