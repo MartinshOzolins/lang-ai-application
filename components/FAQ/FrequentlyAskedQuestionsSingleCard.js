@@ -6,6 +6,9 @@ import { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 
+// transitions
+import { motion, AnimatePresence } from "motion/react";
+
 export default function FrequentlyAskedQuestionsSingleCard({
   question,
   answer,
@@ -16,10 +19,10 @@ export default function FrequentlyAskedQuestionsSingleCard({
 
   return (
     <div
-      className="w-full max-w-3xl bg-stone-200 rounded-xl px-2 py-6 flex flex-col text-sm sm:text-lg inter-regular"
+      className="w-full max-w-3xl bg-stone-200 rounded-xl px-2 py-6 flex flex-col text-sm sm:text-lg inter-regular hover:cursor-pointer"
       onClick={() => setIsAnswerVisible((prev) => !prev)}
     >
-      <div className="w-full flex justify-between">
+      <div className="w-full flex justify-between z-10">
         <div className="flex justify-center items-center">
           <p className="pl-1 pr-5">{emoji}</p>
           <p className="align-middle"> {question}</p>
@@ -42,13 +45,20 @@ export default function FrequentlyAskedQuestionsSingleCard({
           />
         )}
       </div>
-      <div
-        className={`transition-all duration-200 ease-in ${
-          isAnswerVisible ? "max-h-40 opacity-100 mt-2" : "max-h-0 opacity-0"
-        }`}
-      >
-        <p className="text-gray-700">{answer}</p>
-      </div>
+      {isAnswerVisible && (
+        <AnimatePresence>
+          <motion.div
+            key="content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="overflow-hidden mt-2 text-gray-700"
+          >
+            {answer}
+          </motion.div>
+        </AnimatePresence>
+      )}
     </div>
   );
 }
