@@ -4,24 +4,18 @@ import { useEffect, useRef, useState } from "react";
 import { useActionState } from "react";
 import { generateTasks } from "../../actions/actions";
 
-// MUI components
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import StopCircleIcon from "@mui/icons-material/StopCircle";
-
 // PDF generator
 import jsPDF from "jspdf";
-import { useUser } from "@clerk/nextjs";
-import { useAvailableRequestsContext } from "../../contexts/AvailableRequestsContext";
-import ChangeTaskOptionButton from "./ChangeTaskOptionButton";
-import SmallChangeTaskOptionButton from "./SmallChangeTaskOptionButton";
 
-// Constant values
-import {
-  TASK_LANGUAGE_OPTIONS,
-  TASK_LEVEL_OPTIONS,
-  TASK_TOPIC_OPTIONS,
-  TASK_STYLE_OPTIONS,
-} from "../../constants/options";
+// Clerk
+import { useUser } from "@clerk/nextjs";
+
+// context
+import { useAvailableRequestsContext } from "../../contexts/AvailableRequestsContext";
+
+import GenerateTaskButton from "./GenerateTaskButton";
+import TaskOptionsList from "./TaskOptionsList";
+import GeneratedTasksList from "./GeneratedTasksList";
 
 export default function Form() {
   // task state values
@@ -124,7 +118,7 @@ export default function Form() {
 
   return (
     <>
-      <div className=" rounded-xl shadow-xl w-full h-full px-2 pt-8 mt-5 pb-40  mx-auto overflow-scroll xl:max-w-4xl border border-gray-100 bg-gray-100 relative">
+      <div className=" rounded-xl shadow-xl w-full h-full px-2 pt-8 mt-5 pb-40  mx-auto overflow-scroll xl:max-w-4xl border border-gray-100 bg-gray-100 relative inter-regular">
         {/* Form */}
         <form
           action={formAction}
@@ -133,156 +127,38 @@ export default function Form() {
           }`}
           disabled={tasks.length !== 0}
         >
-          <div className="flex flex-col w-full items-end mb-4">
-            <p className="text-sm sm:text-base xl:text-lg font-semibold text-black ">
-              Choose Level:
-            </p>
-            <div className="flex flex-row text-base sm:text-lg xl:text-xl">
-              {TASK_LEVEL_OPTIONS.map(({ label, value }) => (
-                <ChangeTaskOptionButton
-                  key={value}
-                  availableValue={value}
-                  valueLabel={label}
-                  tasksArray={tasks}
-                  state={level}
-                  setStateFunction={setLevel}
-                />
-              ))}
-            </div>
-            <input type="hidden" name="level" value={level} />
-          </div>
-          <div className="flex flex-col w-full items-end mb-4">
-            <p className="text-sm sm:text-base xl:text-lg  font-semibold text-black">
-              Choose Language:
-            </p>
-            <div className="flex flex-row text-base sm:text-lg xl:text-xl">
-              {TASK_LANGUAGE_OPTIONS.map(({ label, value }) => (
-                <ChangeTaskOptionButton
-                  key={value}
-                  availableValue={value}
-                  valueLabel={label}
-                  tasksArray={tasks}
-                  state={language}
-                  setStateFunction={setLanguage}
-                />
-              ))}
-            </div>
-            <input type="hidden" name="language" value={language} />
-          </div>
-          <div className="flex flex-col w-full items-end mb-4">
-            <p
-              className="hidden sm:inline text-sm sm:text-base xl:text-lg font-semibold text-black "
-              type="button"
-            >
-              Choose Topic:
-            </p>
-            <div className="hidden sm:flex flex-col sm:flex-row text-base sm:text-lg xl:text-xl">
-              {TASK_TOPIC_OPTIONS.map(({ label, value }) => (
-                <ChangeTaskOptionButton
-                  key={value}
-                  availableValue={value}
-                  valueLabel={label}
-                  tasksArray={tasks}
-                  state={topic}
-                  setStateFunction={setTopic}
-                />
-              ))}
-            </div>
-            {/* Small screen button */}
-            <SmallChangeTaskOptionButton
-              setIsStateChoiceOpen={setIsTopicChoiceOpen}
-              isStateChoiceOpen={isTopicChoiceOpen}
-              state={topic}
-              setState={setTopic}
-              tasks={tasks}
-              textToDisplay={"Choose Topic:"}
-              availableValues={TASK_TOPIC_OPTIONS}
-            />
-            <input type="hidden" name="topic" value={topic} />
-          </div>
-          <div className="flex flex-col w-full items-end mb-4">
-            <p className="hidden sm:inline text-sm sm:text-base xl:text-lg font-semibold text-black">
-              Choose Task Style:
-            </p>
-            <div className="hidden sm:flex flex-col items-end sm:flex-row sm:justify-end text-base sm:text-lg xl:text-xl">
-              {TASK_STYLE_OPTIONS.map(({ label, value }) => (
-                <ChangeTaskOptionButton
-                  key={value}
-                  availableValue={value}
-                  valueLabel={label}
-                  tasksArray={tasks}
-                  state={style}
-                  setStateFunction={setStyle}
-                />
-              ))}
-            </div>
-            {/* Small screen button */}
-            <SmallChangeTaskOptionButton
-              setIsStateChoiceOpen={setIsTaskStyleChoiceOpen}
-              isStateChoiceOpen={isTaskStyleChoiceOpen}
-              state={style}
-              setState={setStyle}
-              tasks={tasks}
-              textToDisplay={"Choose Task Style:"}
-              availableValues={TASK_STYLE_OPTIONS}
-            />
-            <input type="hidden" name="style" value={style} />
-          </div>
+          <TaskOptionsList
+            tasks={tasks}
+            setLevel={setLevel}
+            level={level}
+            setTopic={setTopic}
+            topic={topic}
+            setStyle={setStyle}
+            style={style}
+            setLanguage={setLanguage}
+            language={language}
+            isTaskStyleChoiceOpen={isTaskStyleChoiceOpen}
+            setIsTaskStyleChoiceOpen={setIsTaskStyleChoiceOpen}
+            isTopicChoiceOpen={isTopicChoiceOpen}
+            setIsTopicChoiceOpen={setIsTopicChoiceOpen}
+          />
           {/* Error state */}
           {state?.error && (
             <div className="w-full mt-4 p-4 bg-gray-100 rounded-md text-red-600 font-semibold">
               <p>{state.error}</p>
             </div>
           )}
-          {/* Generate button and loading state  */}
+          {/* Generate task button and loading state  */}
           {tasks.length == 0 ? (
-            <div className="w-full flex justify-end items-center gap-2 px-2">
-              {isPending ? (
-                <>
-                  <StopCircleIcon className="text-gray-400 animate-pulse hover:cursor-pointer" />
-                  <span className="text-sm sm:text-base xl:text-lg text-gray-500">
-                    Generating...
-                  </span>
-                </>
-              ) : (
-                <button
-                  disabled={tasks.length !== 0}
-                  type="submit"
-                  className="flex items-center gap-1 text-black hover:font-bold hover:cursor-pointer"
-                >
-                  <ArrowUpwardIcon />
-                  <span className="text-sm sm:text-base xl:text-lg font-medium hover:font-bold">
-                    Generate
-                  </span>
-                </button>
-              )}
-            </div>
+            <GenerateTaskButton tasks={tasks} isPending={isPending} />
           ) : null}
         </form>
         {/* Generated Tasks */}
-        <div className="w-full mt-4 p-4 bg-gray-100 rounded-md flex flex-col ">
-          {tasks.length !== 0 && !isEditing && (
-            <div className="flex flex-col text-start text-base sm:text-lg xl:text-xl">
-              {tasks.map((task, index) => (
-                <p className="w-full py-1" key={index}>
-                  {`${index + 1}. ${task.sentence} `}
-                </p>
-              ))}
-            </div>
-          )}
-          {tasks.length !== 0 && isEditing && (
-            <div>
-              {tasks.map((task, index) => (
-                <textarea
-                  className="w-full py-1"
-                  key={index}
-                  onChange={(e) => handleTaskChange(e, index)}
-                  defaultValue={`${index + 1}. ${task.sentence} `}
-                ></textarea>
-              ))}
-            </div>
-          )}
-        </div>
+        <GeneratedTasksList
+          tasks={tasks}
+          isEditing={isEditing}
+          handleTaskChange={handleTaskChange}
+        />
         {/* Element to scroll to when tasks are generated (for smaller screens) */}
         <div ref={messagesEndRef} className="h-1"></div>
       </div>

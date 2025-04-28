@@ -1,12 +1,15 @@
 "use client";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+
+// context
 import { useAvailableRequestsContext } from "../../contexts/AvailableRequestsContext";
 
 export default function UserIcon() {
   const { user, isLoaded } = useUser();
   const [availableRequests, setAvailableRequests] = useState(null);
 
+  // calls the api endpoint that returns user's availableRequests
   const checkAvailableRequests = async () => {
     const response = await fetch("/chat/api/check-requests");
     const data = await response.json();

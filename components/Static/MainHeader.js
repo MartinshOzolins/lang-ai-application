@@ -43,9 +43,6 @@ export default function MainHeader() {
               >
                 FAQ
               </a>
-              <p className="hover:cursor-pointer hover:text-gray-100 pr-3">
-                Contact
-              </p>
               <div className="border-l-1 h-1/2 ">
                 <SignedOut>
                   <SignUpButton mode="modal">
@@ -115,9 +112,6 @@ export default function MainHeader() {
                 >
                   FAQ
                 </a>
-                <p className="hover:cursor-pointer hover:text-gray-100 pt-2 ">
-                  Contact
-                </p>
               </div>
               <div className="h-1/3">
                 <SignedOut>

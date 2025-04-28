@@ -13,7 +13,7 @@ export default function ChangeTaskOptionButton({
       onClick={() => setStateFunction(availableValue)}
       className={`px-2 ${
         state === availableValue
-          ? "text-black font-bold underline"
+          ? "text-black underline font-medium"
           : "text-gray-700"
       } ${
         tasksArray.length !== 0
