@@ -1,8 +1,9 @@
-export default function GeneratedTasksList({
-  tasks,
-  isEditing,
-  handleTaskChange,
-}) {
+// contexts
+import { useGlobalContext } from "../../contexts/GlobalContext";
+
+export default function GeneratedTasksList({ isEditing, handleTaskChange }) {
+  // retrieving global state for generated tasks
+  const { tasks } = useGlobalContext();
   return (
     <div className="w-full mt-4 p-4 bg-gray-100 rounded-md flex flex-col ">
       {tasks.length !== 0 && !isEditing && (

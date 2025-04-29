@@ -1,15 +1,20 @@
+// MUI components
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+
+// contexts
+import { useGlobalContext } from "../../contexts/GlobalContext";
 
 export default function SmallChangeTaskOptionButton({
   setIsStateChoiceOpen,
   isStateChoiceOpen,
   setState,
   state,
-  tasks,
   textToDisplay,
   availableValues,
 }) {
+  // retrieving global state for generated tasks
+  const { tasks } = useGlobalContext();
   return (
     <>
       <button

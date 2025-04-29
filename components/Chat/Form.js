@@ -38,8 +38,9 @@ export default function Form() {
   const [isEditing, setIsEditing] = useState(false);
   const messagesEndRef = useRef(null); // dummy element for scrolling down
 
-  // context to update available requests
+  // context to update available requests and generated tasks
   const { setAvailableRequests, tasks, setTasks } = useGlobalContext();
+
   // current user instance to retrieve latest availableReuqests
   const { user } = useUser();
 
@@ -161,7 +162,6 @@ export default function Form() {
         </form>
         {/* Generated Tasks */}
         <GeneratedTasksList
-          tasks={tasks}
           isEditing={isEditing}
           handleTaskChange={handleTaskChange}
         />

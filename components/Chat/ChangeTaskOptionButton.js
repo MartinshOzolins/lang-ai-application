@@ -1,10 +1,14 @@
+// contexts
+import { useGlobalContext } from "../../contexts/GlobalContext";
+
 export default function ChangeTaskOptionButton({
-  tasks,
   availableValue,
   valueLabel,
   state,
   setStateFunction,
 }) {
+  // retrieving global state for generated tasks
+  const { tasks } = useGlobalContext();
   return (
     <button
       disabled={tasks.length !== 0}

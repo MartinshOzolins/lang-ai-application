@@ -2,9 +2,6 @@
 import ChangeTaskOptionButton from "./ChangeTaskOptionButton";
 import SmallChangeTaskOptionButton from "./SmallChangeTaskOptionButton";
 
-// contexts
-import { useGlobalContext } from "../../contexts/GlobalContext";
-
 // Constant values
 import {
   TASK_LANGUAGE_OPTIONS,
@@ -27,8 +24,6 @@ export default function TaskOptionsList({
   isTaskStyleChoiceOpen,
   setIsTaskStyleChoiceOpen,
 }) {
-  // retrieving global state for generated tasks
-  const { tasks } = useGlobalContext();
   return (
     <>
       <div className="flex flex-col w-full items-end mb-4">
@@ -41,7 +36,6 @@ export default function TaskOptionsList({
               key={value}
               availableValue={value}
               valueLabel={label}
-              tasks={tasks}
               state={level}
               setStateFunction={setLevel}
             />
@@ -59,7 +53,6 @@ export default function TaskOptionsList({
               key={value}
               availableValue={value}
               valueLabel={label}
-              tasks={tasks}
               state={language}
               setStateFunction={setLanguage}
             />
@@ -80,7 +73,6 @@ export default function TaskOptionsList({
               key={value}
               availableValue={value}
               valueLabel={label}
-              tasks={tasks}
               state={topic}
               setStateFunction={setTopic}
             />
@@ -92,7 +84,6 @@ export default function TaskOptionsList({
           isStateChoiceOpen={isTopicChoiceOpen}
           state={topic}
           setState={setTopic}
-          tasks={tasks}
           textToDisplay={"Choose Topic:"}
           availableValues={TASK_TOPIC_OPTIONS}
         />
@@ -108,7 +99,6 @@ export default function TaskOptionsList({
               key={value}
               availableValue={value}
               valueLabel={label}
-              tasks={tasks}
               state={style}
               setStateFunction={setStyle}
             />
@@ -120,7 +110,6 @@ export default function TaskOptionsList({
           isStateChoiceOpen={isTaskStyleChoiceOpen}
           state={style}
           setState={setStyle}
-          tasks={tasks}
           textToDisplay={"Choose Task Style:"}
           availableValues={TASK_STYLE_OPTIONS}
         />
