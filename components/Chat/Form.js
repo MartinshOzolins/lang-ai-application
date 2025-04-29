@@ -21,6 +21,7 @@ import {
   EditTaskSvg,
 } from "../../constants/svgs";
 import { generatePDF } from "../../utils/generatePDF";
+import ErrorMessage from "./ErrorMessage";
 
 export default function Form() {
   // form state
@@ -117,12 +118,10 @@ export default function Form() {
             shouldResetTaskOptions={shouldResetTaskOptions}
             setShouldResetTaskOptions={setShouldResetTaskOptions}
           />
+
           {/* Error state */}
-          {formState?.error && (
-            <div className="w-full mt-4 p-4 bg-gray-100 rounded-md text-red-600 font-semibold">
-              <p>{formState.error}</p>
-            </div>
-          )}
+          <ErrorMessage formState={formState} />
+
           {/* Generate task button and loading state  */}
           {tasks.length == 0 ? (
             <GenerateTaskButton isPending={isPending} />
