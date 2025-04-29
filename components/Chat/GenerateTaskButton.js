@@ -5,12 +5,12 @@ import StopCircleIcon from "@mui/icons-material/StopCircle";
 // contexts
 import { useGlobalContext } from "../../contexts/GlobalContext";
 
-export default function GenerateTaskButton({ isPending }) {
+export default function GenerateTaskButton({ isLoadingTasks }) {
   // retrieving global state for generated tasks
   const { tasks } = useGlobalContext();
   return (
     <div className="w-full flex justify-end items-center gap-2 px-2">
-      {isPending ? (
+      {isLoadingTasks ? (
         <>
           <StopCircleIcon className="text-gray-400 animate-pulse hover:cursor-pointer" />
           <span className="text-sm sm:text-base xl:text-lg text-gray-500">
