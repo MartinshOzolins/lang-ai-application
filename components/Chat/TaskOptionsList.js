@@ -2,6 +2,8 @@
 import ChangeTaskOptionButton from "./ChangeTaskOptionButton";
 import SmallChangeTaskOptionButton from "./SmallChangeTaskOptionButton";
 
+import { useEffect, useState } from "react";
+
 // Constant values
 import {
   TASK_LANGUAGE_OPTIONS,
@@ -11,19 +13,30 @@ import {
 } from "../../constants/options";
 
 export default function TaskOptionsList({
-  setLevel,
-  level,
-  setLanguage,
-  language,
-  setStyle,
-  style,
-  setTopic,
-  topic,
   isTopicChoiceOpen,
   setIsTopicChoiceOpen,
   isTaskStyleChoiceOpen,
   setIsTaskStyleChoiceOpen,
+  shouldResetTaskOptions,
+  setShouldResetTaskOptions,
 }) {
+  // task state values
+  const [level, setLevel] = useState("A1");
+  const [language, setLanguage] = useState("spanish");
+  const [topic, setTopic] = useState("food");
+  const [style, setStyle] = useState("fill-in-the-blank");
+
+  // resets all the options when pdf is downloaded
+  useEffect(() => {
+    if (shouldResetTaskOptions) {
+      setShouldResetTaskOptions(false);
+      setLevel("A1");
+      setLanguage("spanish");
+      setTopic("food");
+      setStyle("fill-in-the-blank");
+    }
+  }, [shouldResetTaskOptions, setShouldResetTaskOptions]);
+
   return (
     <>
       <div className="flex flex-col w-full items-end mb-4">

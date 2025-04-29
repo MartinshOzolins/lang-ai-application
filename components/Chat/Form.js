@@ -4,9 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useActionState } from "react";
 import { generateTasks } from "../../actions/actions";
 
-// PDF generator
-import jsPDF from "jspdf";
-
 // Clerk
 import { useUser } from "@clerk/nextjs";
 
@@ -23,19 +20,16 @@ import {
   DownloadWithoutAnswersSvg,
   EditTaskSvg,
 } from "../../constants/svgs";
+import { generatePDF } from "../../utils/generatePDF";
 
 export default function Form() {
-  // task state values
-  const [level, setLevel] = useState("A1");
-  const [language, setLanguage] = useState("spanish");
-  const [topic, setTopic] = useState("food");
-  const [style, setStyle] = useState("fill-in-the-blank");
-
   // form state
-  const [state, formAction, isPending] = useActionState(generateTasks, []);
+  const [formState, formAction, isPending] = useActionState(generateTasks, []);
 
   const [hasGenerated, setHasGenerated] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [shouldResetTaskOptions, setShouldResetTaskOptions] = useState(false);
+
   const messagesEndRef = useRef(null); // dummy element for scrolling down
 
   // context to update available requests and generated tasks
@@ -62,15 +56,15 @@ export default function Form() {
 
   // splits tasks into separate sentences when generated
   useEffect(() => {
-    if (state.response) {
+    if (formState.response) {
       setTasks(() => {
-        return state.response.map((task) => {
+        return formState.response.map((task) => {
           return { ...task };
         });
       });
       setHasGenerated(true);
     }
-  }, [state.response]);
+  }, [formState.response, setTasks]);
 
   // scrolls to the bottom when tasks are generated
   const scrollToBottom = () => {
@@ -89,35 +83,15 @@ export default function Form() {
       scrollToBottom();
       setHasGenerated(false); // resets hasGenerated after the reload
     }
-  }, [hasGenerated]);
+  }, [hasGenerated, setAvailableRequests, user]);
 
   // generates PDF and clears inputs
   const handleGeneratePDF = (shouldIncludeAnswers = false) => {
-    const pdf = new jsPDF({ orientation: "p", format: "a4", unit: "mm" });
-    pdf.setFontSize(11);
+    // executes function to generate a PDF file
+    generatePDF(shouldIncludeAnswers, tasks);
 
-    // 1st page with sentences
-    let pageOneY = 20;
-    tasks.forEach((task, index) => {
-      pdf.text(`${index + 1}. ${task.sentence}`, 5, pageOneY);
-      pageOneY += 20;
-    });
-
-    // if clicked "download with answers" includes second page as well
-    if (shouldIncludeAnswers === true) {
-      // 2nd page with answers
-      pdf.addPage({ format: "a4", orientation: "p", unit: "mm" });
-      let pageTwoY = 20;
-      tasks.forEach((task, index) => {
-        pdf.text(`${index + 1}. ${task.answer}`, 5, pageTwoY);
-        pageTwoY += 20;
-      });
-    }
-    pdf.save("tasks");
-    setLevel("A1");
-    setLanguage("spanish");
-    setTopic("food");
-    setStyle("fill-in-the-blank");
+    // resets all the states
+    setShouldResetTaskOptions(true);
     setTasks([]);
     setHasGenerated(false);
     setIsEditing(false);
@@ -136,23 +110,17 @@ export default function Form() {
         >
           {/* Available Task Options (should move some states into global context to avoid prop drilling) */}
           <TaskOptionsList
-            setLevel={setLevel}
-            level={level}
-            setTopic={setTopic}
-            topic={topic}
-            setStyle={setStyle}
-            style={style}
-            setLanguage={setLanguage}
-            language={language}
             isTaskStyleChoiceOpen={isTaskStyleChoiceOpen}
             setIsTaskStyleChoiceOpen={setIsTaskStyleChoiceOpen}
             isTopicChoiceOpen={isTopicChoiceOpen}
             setIsTopicChoiceOpen={setIsTopicChoiceOpen}
+            shouldResetTaskOptions={shouldResetTaskOptions}
+            setShouldResetTaskOptions={setShouldResetTaskOptions}
           />
           {/* Error state */}
-          {state?.error && (
+          {formState?.error && (
             <div className="w-full mt-4 p-4 bg-gray-100 rounded-md text-red-600 font-semibold">
-              <p>{state.error}</p>
+              <p>{formState.error}</p>
             </div>
           )}
           {/* Generate task button and loading state  */}
