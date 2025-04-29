@@ -2,6 +2,9 @@
 import ChangeTaskOptionButton from "./ChangeTaskOptionButton";
 import SmallChangeTaskOptionButton from "./SmallChangeTaskOptionButton";
 
+// contexts
+import { useGlobalContext } from "../../contexts/GlobalContext";
+
 // Constant values
 import {
   TASK_LANGUAGE_OPTIONS,
@@ -11,7 +14,6 @@ import {
 } from "../../constants/options";
 
 export default function TaskOptionsList({
-  tasks,
   setLevel,
   level,
   setLanguage,
@@ -25,6 +27,8 @@ export default function TaskOptionsList({
   isTaskStyleChoiceOpen,
   setIsTaskStyleChoiceOpen,
 }) {
+  // retrieving global state for generated tasks
+  const { tasks } = useGlobalContext();
   return (
     <>
       <div className="flex flex-col w-full items-end mb-4">
@@ -37,7 +41,7 @@ export default function TaskOptionsList({
               key={value}
               availableValue={value}
               valueLabel={label}
-              tasksArray={tasks}
+              tasks={tasks}
               state={level}
               setStateFunction={setLevel}
             />
@@ -55,7 +59,7 @@ export default function TaskOptionsList({
               key={value}
               availableValue={value}
               valueLabel={label}
-              tasksArray={tasks}
+              tasks={tasks}
               state={language}
               setStateFunction={setLanguage}
             />
@@ -76,7 +80,7 @@ export default function TaskOptionsList({
               key={value}
               availableValue={value}
               valueLabel={label}
-              tasksArray={tasks}
+              tasks={tasks}
               state={topic}
               setStateFunction={setTopic}
             />
@@ -104,7 +108,7 @@ export default function TaskOptionsList({
               key={value}
               availableValue={value}
               valueLabel={label}
-              tasksArray={tasks}
+              tasks={tasks}
               state={style}
               setStateFunction={setStyle}
             />

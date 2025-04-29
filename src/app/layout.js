@@ -13,7 +13,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 //components
 import MainHeader from "../../components/Static/MainHeader";
 import MainFooter from "../../components/Static/MainFooter";
-import AvailableRequestsContextProvider from "../../contexts/AvailableRequestsContext";
+import AvailableRequestsContextProvider from "../../contexts/GlobalContext";
 
 export default function RootLayout({ children }) {
   return (

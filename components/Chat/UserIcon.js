@@ -3,7 +3,7 @@ import { UserButton, useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 
 // context
-import { useAvailableRequestsContext } from "../../contexts/AvailableRequestsContext";
+import { useGlobalContext } from "../../contexts/GlobalContext";
 
 export default function UserIcon() {
   const { user, isLoaded } = useUser();
@@ -20,8 +20,7 @@ export default function UserIcon() {
     checkAvailableRequests(); // initial fetch to set availableRequests
   }, []);
 
-  const { availableRequests: updatedAvailableRequests } =
-    useAvailableRequestsContext(); // availableRequests context
+  const { availableRequests: updatedAvailableRequests } = useGlobalContext(); // availableRequests context
 
   useEffect(() => {
     setAvailableRequests(updatedAvailableRequests); // updates when context changes

@@ -2,7 +2,12 @@
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 
-export default function GenerateTaskButton({ tasks, isPending }) {
+// contexts
+import { useGlobalContext } from "../../contexts/GlobalContext";
+
+export default function GenerateTaskButton({ isPending }) {
+  // retrieving global state for generated tasks
+  const { tasks } = useGlobalContext();
   return (
     <div className="w-full flex justify-end items-center gap-2 px-2">
       {isPending ? (

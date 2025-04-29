@@ -1,5 +1,5 @@
 export default function ChangeTaskOptionButton({
-  tasksArray,
+  tasks,
   availableValue,
   valueLabel,
   state,
@@ -7,7 +7,7 @@ export default function ChangeTaskOptionButton({
 }) {
   return (
     <button
-      disabled={tasksArray.length !== 0}
+      disabled={tasks.length !== 0}
       type="button"
       key={availableValue}
       onClick={() => setStateFunction(availableValue)}
@@ -16,9 +16,7 @@ export default function ChangeTaskOptionButton({
           ? "text-black underline font-medium"
           : "text-gray-700"
       } ${
-        tasksArray.length !== 0
-          ? "hover:cursor-not-allowed"
-          : "hover:cursor-pointer"
+        tasks.length !== 0 ? "hover:cursor-not-allowed" : "hover:cursor-pointer"
       }`}
     >
       {valueLabel}

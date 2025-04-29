@@ -11,7 +11,7 @@ import jsPDF from "jspdf";
 import { useUser } from "@clerk/nextjs";
 
 // context
-import { useAvailableRequestsContext } from "../../contexts/AvailableRequestsContext";
+import { useGlobalContext } from "../../contexts/GlobalContext";
 
 import GenerateTaskButton from "./GenerateTaskButton";
 import TaskOptionsList from "./TaskOptionsList";
@@ -34,13 +34,12 @@ export default function Form() {
   // form state
   const [state, formAction, isPending] = useActionState(generateTasks, []);
 
-  const [tasks, setTasks] = useState([]);
   const [hasGenerated, setHasGenerated] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const messagesEndRef = useRef(null); // dummy element for scrolling down
 
   // context to update available requests
-  const { setAvailableRequests } = useAvailableRequestsContext();
+  const { setAvailableRequests, tasks, setTasks } = useGlobalContext();
   // current user instance to retrieve latest availableReuqests
   const { user } = useUser();
 
@@ -136,7 +135,6 @@ export default function Form() {
         >
           {/* Available Task Options (should move some states into global context to avoid prop drilling) */}
           <TaskOptionsList
-            tasks={tasks}
             setLevel={setLevel}
             level={level}
             setTopic={setTopic}
@@ -158,7 +156,7 @@ export default function Form() {
           )}
           {/* Generate task button and loading state  */}
           {tasks.length == 0 ? (
-            <GenerateTaskButton tasks={tasks} isPending={isPending} />
+            <GenerateTaskButton isPending={isPending} />
           ) : null}
         </form>
         {/* Generated Tasks */}
