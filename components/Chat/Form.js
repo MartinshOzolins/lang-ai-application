@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useActionState } from "react";
+
+// next.js action functions
 import { generateTasks } from "../../actions/actions";
 
 // Clerk
@@ -19,6 +21,7 @@ import PostGenerationButtons from "./PostGenerationButtons";
 
 // PDF generation function
 import { generatePDF } from "../../utils/generatePDF";
+import { scrollToElement } from "../../utils/scrollToElement";
 
 export default function Form() {
   // form state
@@ -28,15 +31,18 @@ export default function Form() {
   );
 
   const [hasGenerated, setHasGenerated] = useState(false);
+  // state that affects download button access
   const [isEditingTasks, setIsEditingTasks] = useState(false);
+  // state that triggers reset of all option states
   const [shouldResetTaskOptions, setShouldResetTaskOptions] = useState(false);
 
-  const messagesEndRef = useRef(null); // dummy element for scrolling down
+  // dummy element for scrolling down
+  const messagesEndRef = useRef(null);
 
   // context to update available requests and generated tasks
   const { setAvailableRequests, tasks, setTasks } = useGlobalContext();
 
-  // current user instance to retrieve latest availableReuqests
+  // current user instance used to refresh and get updated available requests
   const { user } = useUser();
 
   // UI state for smaller screen
@@ -67,12 +73,7 @@ export default function Form() {
     }
   }, [formState.response, setTasks]);
 
-  // scrolls to the bottom when tasks are generated
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  // updates availableRequests and calls "scrollToBottom" to scroll to the bottom when tasks are generated
+  // refreshes user metadata and scrolls to task list after tasks are generated
   useEffect(() => {
     const reloadUserData = async () => {
       await user.reload(); // refresh user info to display renewed metadata
@@ -81,7 +82,7 @@ export default function Form() {
 
     if (hasGenerated) {
       reloadUserData();
-      scrollToBottom();
+      scrollToElement(messagesEndRef); // scrolls to the element when tasks are generated
       setHasGenerated(false); // resets hasGenerated after the reload
     }
   }, [hasGenerated, setAvailableRequests, user]);
