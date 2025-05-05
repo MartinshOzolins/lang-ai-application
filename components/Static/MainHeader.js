@@ -1,10 +1,10 @@
 "use client";
 
+// Next.js functions and components
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-// next.js functions
-import { usePathname } from "next/navigation";
-
+// Clerk auth
 import {
   SignOutButton,
   SignUpButton,
@@ -12,66 +12,42 @@ import {
   SignedOut,
 } from "@clerk/nextjs";
 import { useState } from "react";
-import MainNavBar from "./HeaderComponents/MainNavBar";
+
+// Components
+import MainNavbar from "./HeaderComponents/MainNavBar";
+import MobileNavToggle from "./HeaderComponents/MobileNavToggle";
 
 export default function MainHeader() {
   const pathname = usePathname();
 
-  const [isSectionVisible, setIsSectionVisible] = useState(false);
+  const [isSmallNavBarOpen, setIsSmallNavBarOpen] = useState(false);
 
   return (
     <>
       {pathname === "/" && (
         <>
+          {/* Upper Header */}
           <div
             className={`fixed top-5 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] sm:max-w-lg md:max-w-2xl lg:max-w-3xl flex items-center bg-neutral-900 text-white h-14 px-5 ${
-              isSectionVisible ? "rounded-none rounded-t-xl" : "rounded-xl"
+              isSmallNavBarOpen ? "rounded-none rounded-t-xl" : "rounded-xl"
             } `}
           >
             <Link href="/" className="instrument-serif-regular-italic text-xl">
               LangAI{" "}
             </Link>
+
             {/* Main navbar only for larger screens */}
-            <MainNavBar />
-            {/* Menu button and close menu button only for smaller screens */}
-            <div className="text-xs space-x-2 w-full justify-end flex sm:hidden">
-              {!isSectionVisible ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6 hover:cursor-pointer"
-                  onClick={() => setIsSectionVisible((prev) => !prev)}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6 hover:cursor-pointer"
-                  onClick={() => setIsSectionVisible((prev) => !prev)}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18 18 6M6 6l12 12"
-                  />
-                </svg>
-              )}
-            </div>
+            <MainNavbar />
+
+            {/* Menu button and close menu button only for smaller screens (appear in upper header)*/}
+            <MobileNavToggle
+              isSmallNavBarOpen={isSmallNavBarOpen}
+              setIsSmallNavBarOpen={setIsSmallNavBarOpen}
+            />
           </div>
-          {/* Small Screen Header  */}
-          {isSectionVisible && (
+
+          {/* Small Screen Header dropdown that opens after toggling buttons*/}
+          {isSmallNavBarOpen && (
             <div className="fixed top-19 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] sm:max-w-lg md:max-w-2xl lg:max-w-3xl flex flex-col rounded-b-xl bg-neutral-700 text-white h-27 px-5 flex sm:hidden">
               <div className="h-2/3 w-full text-xs flex flex-col  space-x-2 justify-center">
                 <a

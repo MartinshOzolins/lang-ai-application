@@ -6,7 +6,7 @@ import {
   SignedOut,
 } from "@clerk/nextjs";
 
-export default function MainNavBar() {
+export default function MainNavbar() {
   return (
     <>
       {/* NavBar only for larger screens */}
