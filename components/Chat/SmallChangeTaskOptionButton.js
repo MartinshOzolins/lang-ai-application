@@ -34,7 +34,7 @@ export default function SmallChangeTaskOptionButton({
               onClick={() => setState(value)}
               className={`px-2 text-right ${
                 state === value
-                  ? "text-black font-bold underline "
+                  ? "font-medium text-black underline "
                   : "text-gray-700"
               } ${
                 tasks.length !== 0

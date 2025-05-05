@@ -12,7 +12,7 @@ export default function Home() {
       <h1 className="text-center  instrument-serif-regular-italic text-2xl sm:text-3xl md:text-4xl">
         Boost Your Language Skills with AI-Powered Tasks
       </h1>
-      <p className="py-10 text-center mx-auto lg:max-w-3xl text-base sm:text-xl lg:text-2xl text-gray-600 ">
+      <p className="py-10 text-center mx-auto lg:max-w-3xl text-base sm:text-xl lg:text-2xl text-gray-600">
         From translations to fill-in-the-blanks, create and download language
         tasks in seconds. LangAI is your personalized language learning
         companion, designed to help you practice and improve with ease.
